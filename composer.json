@@ -1,6 +1,9 @@
 {
     "name": "jaakkom/procountor-php",
     "description": "PHP Procountor client",
+    "autoload": {
+        "psr-4": {"Procountor\\": "src/Procountor"}
+    },
     "require": {
         "php": "^7.0",
         "league/oauth2-client": "^2.2"
