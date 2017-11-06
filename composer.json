@@ -8,6 +8,6 @@
     },
     "require": {
         "php": "^7.0",
-        "nategood/httpful": "*"
+        "guzzlehttp/guzzle": "^6.3"
     }
 }
