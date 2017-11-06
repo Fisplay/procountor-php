@@ -8,6 +8,6 @@
     },
     "require": {
         "php": "^7.0",
-        "league/oauth2-client": "^2.2"
+        "tcdent/php-restclient": "^0.1.7"
     }
 }
