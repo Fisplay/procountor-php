@@ -8,6 +8,6 @@
     },
     "require": {
         "php": "^7.0",
-        "tcdent/php-restclient": "^0.1.7"
+        "nategood/httpful": "*"
     }
 }
