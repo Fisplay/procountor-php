@@ -3,6 +3,8 @@ namespace Procountor\Json;
 
 use DateTime;
 use Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Collection\AbstractCollection;
+
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -24,15 +26,30 @@ class Builder {
         $reflection = new ReflectionClass($this->resource);
         $jsonArray = [];
 
-        foreach($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            if (strpos($method->name, 'get')===false) {
+                continue;
+            }
+
             $methodname = $method->name;
             $methodreturn = $this->resource->$methodname();
-            switch(gettype($methodreturn)) {
-                case 'object':
-                    $value = $this->handleObject($methodreturn);
+
+            //We dont want nulls to json
+            if( $methodreturn===null) {
+                continue;
+            }
+
+            $methodReturnObj = (object)$methodreturn;
+
+            switch(true) {
+                case $methodReturnObj instanceof DateTime:
+                    $value = $this->handleDateTime($methodreturn);
                 break;
-                case 'array':
-                    $value = $this->handleArray($methodreturn);
+                case $methodReturnObj instanceof AbstractResourceInterface:
+                    $value = $this->handleResource($methodreturn);
+                break;
+                case $methodReturnObj instanceof AbstractCollection:
+                    $value = $this->handleCollection($methodreturn);
                 break;
                 default;
                     $value = $methodreturn;
@@ -55,26 +72,21 @@ class Builder {
         return lcfirst(str_replace('get', '', $methodname));
     }
 
-    private function handleObject($object) {
-        if ($object instanceof AbstractResourceInterface) {
-            $builder = new self();
-            $builder->setResource($object);
-            return $builder->getArray();
-        }
-
-        switch(get_class($object)) {
-            case DateTime::class:
-                return $object->format('Y-m-d');
-            break;
-            default:
-
-            throw new \Exception('ei onnaa');
-        }
+    private function handleResource(AbstractResourceInterface $object) {
+        $builder = new self();
+        $builder->setResource($object);
+        return $builder->getArray();
     }
 
-    private function handleArray($array) {
+
+    private function handleDateTime(DateTime $datetime) {
+        return $datetime->format('Y-m-d');
+    }
+
+    private function handleCollection(AbstractCollection $collection): Array
+    {
         $ret = [];
-        foreach ($array as $object) {
+        foreach ($collection as $object) {
             $builder = new self();
             $builder->setResource($object);
             $ret[] = $builder->getArray();

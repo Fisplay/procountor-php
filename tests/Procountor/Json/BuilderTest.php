@@ -5,17 +5,24 @@ use PHPUnit\Framework\TestCase;
 use Procountor\Interfaces\AbstractResourceInterface;
 use DateTime;
 
+use Procountor\Collection\AbstractCollection;
+
 class BuilderTest extends TestCase {
 
     public function testBuild() {
         $builder = new Builder();
         $builder->setResource(new class() implements AbstractResourceInterface {
-            public function getDate(): DateTime
+            public function getTestDate(): DateTime
             {
                 return new DateTime('2017-07-07 11:22:33');
             }
 
-            public function getAnotherResource(): AbstractResourceInterface
+            public function getTestNull(): ?string
+            {
+                return null;
+            }
+
+            public function getTestAnotherResource(): AbstractResourceInterface
             {
                 return new class() implements AbstractResourceInterface {
                     public function getStringOfChild(): string
@@ -26,17 +33,17 @@ class BuilderTest extends TestCase {
 
             }
 
-            public function getString(): string
+            public function getTestString(): string
             {
                 return 'testString';
             }
 
-            public function getInt(): int
+            public function getTestInt(): int
             {
                 return 123456;
             }
 
-            public function getArrayOfObjects(): array
+            public function getTestCollection(): AbstractCollection
             {
                 $child = new class() implements AbstractResourceInterface {
                     public function getStringOfChild(): string
@@ -45,10 +52,20 @@ class BuilderTest extends TestCase {
                     }
                 };
 
-                return [
-                    $child,
-                    $child,
-                ];
+
+                $collection = new class() extends AbstractCollection
+                {
+                    public function addItem(AbstractResourceInterface $item): AbstractCollection
+                    {
+                        $this->addItemToCollection($item);
+                        return $this;
+                    }
+                };
+
+                for ($i=1; $i<=2; $i++) {
+                    $collection->addItem($child);
+                }
+                return $collection;
             }
 
 
@@ -57,11 +74,11 @@ class BuilderTest extends TestCase {
         $actual = json_decode($builder->getJson(), true);
 
         $this->assertSame([
-            'date' => '2017-07-07',
-            'anotherResource' => ['stringOfChild' => 'testStringOfChild'],
-            'string' => 'testString',
-            'int' => 123456,
-            'arrayOfObjects' => [
+            'testDate' => '2017-07-07',
+            'testAnotherResource' => ['stringOfChild' => 'testStringOfChild'],
+            'testString' => 'testString',
+            'testInt' => 123456,
+            'testCollection' => [
                 0 => ['stringOfChild' => 'testStringOfChild'],
                 1 => ['stringOfChild' => 'testStringOfChild'],
             ],

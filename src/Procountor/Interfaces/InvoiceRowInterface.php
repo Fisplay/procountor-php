@@ -2,7 +2,7 @@
 namespace Procountor\Interfaces;
 
 
-interface InvoiceRow extends AbstractResourceInterface {
+interface InvoiceRowInterface extends AbstractResourceInterface {
 
     //Unique identifier for a product. Links the invoice row to a product in the product register. Note that all other fields (name, price, ...) of an invoice row can be modified independently of the information in the product register. ,
     public function getProductId(): ?int;
@@ -20,7 +20,7 @@ interface InvoiceRow extends AbstractResourceInterface {
     public function getUnit(): string;
 
     //Product unit price. This value is affected by the "unit prices include VAT" setting on the invoice. ,
-    public function getUnitPrice(): fload;
+    public function getUnitPrice(): float;
 
     //Product discount percentage
     public function getDiscountPercent(): float;

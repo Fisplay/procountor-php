@@ -4,6 +4,10 @@ namespace Procountor;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Request;
 
+
+use Procountor\Json\Builder;
+use Procountor\Interfaces\AbstractResourceInterface;
+
 class Client {
     private $accessToken;
     private $oauth2Provider = null;
@@ -81,13 +85,14 @@ class Client {
         return $headers;
     }
 
-    public function post(string $resourceName, Interface $resource)
+    public function post(string $resourceName, AbstractResourceInterface $resource)
     {
         $params = $this->getRequestAuthHeaders();
         $builder = new Builder();
-        $builder->setResource($object);
+        $builder->setResource($resource);
         $params['body'] = $builder->getJson();
-
+        var_dump($params);
+die();
         $request = $this->guzzleClient->request('POST', $this->getResourceUrl($resourceName), $params);
     }
 

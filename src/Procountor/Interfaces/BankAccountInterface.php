@@ -2,9 +2,10 @@
 namespace Procountor\Interfaces;
 
 
-interface EInvoiceAddressInterface extends AbstractResourceInterface {
-    //SALES_INVOICE Only. Operator code. Required if the invoiceChannel is ELECTRONIC_INVOICE and country is FINLAND. ,
-    public function getOperator(): string;
-    //SALES_INVOICE Only. EInvoice Address. Required if the invoiceChannel is ELECTRONIC_INVOICE, format must be valid for the specified country.
-    public function getAddress(): ?string;
+interface BankAccountInterface extends AbstractResourceInterface {
+    //Bank account IBAN. If using a financing agreement, the account number must match the account of the specified financing agreement. The account number must be valid for the specified country. See http://support.procountor.com/en/maksuliikenne/pankkiyhteydet.html for more information about adding bank accounts in Procountor. ,
+    public function getAccountNumber(): string;
+
+    //PURCHASE_INVOICE only. Bank account BIC/SWIFT.
+    public function getBic(): ?string;
 }
