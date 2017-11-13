@@ -1,20 +1,25 @@
 <?php
 namespace Procountor;
 
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Psr7\Request;
+
 class Client {
     private $accessToken;
     private $oauth2Provider = null;
     private $mode = 'prod';
     private $state = null;
     private $loginParameters = [];
+    private $guzzleClient;
 
     private static $urls = [
         'prod' => [
+            'urlBase' => '',
             'urlAuthorize' => '',
             'urlAccessToken' => '',
         ],
         'dev' => [
-            'urlBase' => 'https://api-test.procountor.com/api'
+            'urlBase' => 'https://api-test.procountor.com/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
@@ -22,6 +27,7 @@ class Client {
 
     public function __construct()
     {
+        $this->guzzleClient = new GuzzleClient(['base_uri' => $this->getBaseUri()]);
         $this->state = rand().strtotime('now');
     }
 
@@ -34,6 +40,7 @@ class Client {
         int $company
     ): self
     {
+
         $this->loginParameters = [
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
@@ -44,7 +51,6 @@ class Client {
         ];
 
         $code = $this->getAuthorizationCode();
-
         $this->accessToken = $this->getAccessTokenByAuthorizationCode($code);
         return $this;
     }
@@ -64,9 +70,35 @@ class Client {
         return $ch;
     }
 
-    public function resource(string $resourceName)
+    private function getRequestAuthHeaders() {
+        $headers = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$this->accessToken
+            ]
+        ];
+
+        return $headers;
+    }
+
+    public function post(string $resourceName, Interface $resource)
     {
-        $resource = new $resourceName();
+        $params = $this->getRequestAuthHeaders();
+        $builder = new Builder();
+        $builder->setResource($object);
+        $params['body'] = $builder->getJson();
+
+        $request = $this->guzzleClient->request('POST', $this->getResourceUrl($resourceName), $params);
+    }
+
+    public function get(string $resourceName) {
+        $response = $this->guzzleClient->request('GET', $this->getResourceUrl($resourceName), $this->getRequestAuthHeaders())->getBody();
+        return json_decode($response);
+    }
+
+    private function getResourceUrl(string $resourceName, $id = null): string
+    {
+        return sprintf('%s/%s', $this->getBaseUri(), $resourceName);
     }
 
     public function createNewRequest(array $data) {
@@ -105,6 +137,8 @@ class Client {
 
     private function getAuthorizationCode(): string
     {
+
+
         $post = [
             'username' => $this->loginParameters['username'],
             'password' => $this->loginParameters['password'],
@@ -140,17 +174,19 @@ class Client {
     public function setModeDev(): self
     {
         $this->mode = 'dev';
+        $this->guzzleClient = new GuzzleClient(['base_uri' => $this->getBaseUri()]);
+
         return $this;
     }
 
     private function getUrlAuthorize(): string
     {
-        return $this->getUrlApi().self::$urls[$this->mode]['urlAuthorize'];
+        return $this->getBaseUri().self::$urls[$this->mode]['urlAuthorize'];
     }
 
     private function getUrlAccessToken(): string
     {
-        return $this->getUrlApi().self::$urls[$this->mode]['urlAccessToken'];
+        return $this->getBaseUri().self::$urls[$this->mode]['urlAccessToken'];
     }
 
     private function getState(): string
@@ -158,7 +194,7 @@ class Client {
         return $this->state;
     }
 
-    public function getUrlApi(): string
+    private function getBaseUri(): string
     {
         return self::$urls[$this->mode]['urlBase'];
     }
