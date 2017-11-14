@@ -5,6 +5,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Request;
 
 
+
 use Procountor\Json\Builder;
 use Procountor\Interfaces\AbstractResourceInterface;
 
@@ -18,12 +19,12 @@ class Client {
 
     private static $urls = [
         'prod' => [
-            'urlBase' => '',
-            'urlAuthorize' => '',
-            'urlAccessToken' => '',
+            'urlBase' => 'https://api.procountor.com/procountor.api.v4/api',
+            'urlAuthorize' => '/oauth/authz',
+            'urlAccessToken' => '/oauth/token',
         ],
         'dev' => [
-            'urlBase' => 'https://api-test.procountor.com/api',
+            'urlBase' => 'https://api-test.procountor.com/procountor.api.v4/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
@@ -59,27 +60,14 @@ class Client {
         return $this;
     }
 
-    private function getNewCurlRequest(array $requestOptions) {
-        $ch = curl_init();
-
-        $options =  $requestOptions + [
-            CURLOPT_HEADER => 0,
-            CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
-            CURLOPT_RETURNTRANSFER => 1,
-            //CURLOPT_VERBOSE => 1,
-        ];
-
-        curl_setopt_array($ch, $options);
-
-        return $ch;
-    }
-
     private function getRequestAuthHeaders() {
         $headers = [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$this->accessToken
-            ]
+            ],
+            'http_errors' => false,
+
         ];
 
         return $headers;
@@ -90,10 +78,20 @@ class Client {
         $params = $this->getRequestAuthHeaders();
         $builder = new Builder();
         $builder->setResource($resource);
-        $params['body'] = $builder->getJson();
-        var_dump($params);
-die();
+        $params['json'] = $builder->getArray();
         $request = $this->guzzleClient->request('POST', $this->getResourceUrl($resourceName), $params);
+        $response = json_decode($request->getBody());
+
+        if (!empty($response->error)) {
+            $this->error($response);
+        }
+
+        if(!empty($response->constraintViolations)) {
+            $error = new \stdClass();
+            $error->error = $response->constraintViolations[0]->field;
+            $error->error_description = $response->constraintViolations[0]->errorCode;
+            $this->error($error);
+        }
     }
 
     public function get(string $resourceName) {
@@ -106,74 +104,90 @@ die();
         return sprintf('%s/%s', $this->getBaseUri(), $resourceName);
     }
 
-    public function createNewRequest(array $data) {
-        $ch = $this->getNewCurlRequest([
-
-        ]);
-
-        return $ch;
-    }
-
-    private function getAccessTokenByAuthorizationCode(string $code): string
+     private function getAccessTokenByAuthorizationCode(string $code): string
     {
+
         $post = [
             'code' => $code,
             'client_id' => $this->loginParameters['clientId'],
             'client_secret' => $this->loginParameters['clientSecret'],
             'redirect_uri' => $this->loginParameters['redirectUri'],
         ];
-
-        $options = [
-            CURLOPT_POST => 1,
-            CURLOPT_URL => sprintf(
+        $url = sprintf(
                 '%s?grant_type=authorization_code&',
                 $this->getUrlAccessToken()
-            ).http_build_query($post),
-            CURLOPT_POSTFIELDS => http_build_query($post),
-        ];
+        ).http_build_query($post);
 
-        $ch = $this->getNewCurlRequest($options);
+        $request = $this->guzzleClient->request('POST',
+            $url,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ],
+                'form_params' => $post
+            ]
 
+        );
 
+        $result = json_decode($request->getBody());
 
-        $result = json_decode(curl_exec($ch));
+        if (!empty($result->error)) {
+            $this->error($result);
+        }
         return $result->access_token;
+    }
+
+    private function error($result) {
+        throw new ClientException($result->error_description);
+
     }
 
     private function getAuthorizationCode(): string
     {
-
-
-        $post = [
-            'username' => $this->loginParameters['username'],
-            'password' => $this->loginParameters['password'],
-            'company' => $this->loginParameters['company'],
-            'redirect_uri' => $this->loginParameters['redirectUri'],
-            'response_type' => 'code',
-        ];
-
-        $options = [
-            CURLOPT_POST => 1,
-            CURLOPT_HEADER => 1,
-            CURLOPT_URL => sprintf(
+        $url =  sprintf(
                 '%s?response_type=code&client_id=%s&state=%s',
                 $this->getUrlAuthorize(),
                 $this->loginParameters['clientId'],
                 $this->getState()
-            ),
-            CURLOPT_POSTFIELDS => http_build_query($post),
-        ];
+            );
+        $params = [
+                'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ],
+                'form_params' => [
+                    'response_type' => 'code',
+                    'username' => urlencode($this->loginParameters['username']),
+                    'password' => urlencode($this->loginParameters['password']),
+                    'company' => urlencode($this->loginParameters['company']),
+                    'redirect_uri' => $this->loginParameters['redirectUri'],
+                ],
+                'http_errors' => false,
+                'allow_redirects' => [
+                    'max'             => 0,        // allow at most 10 redirects.
+                    'strict'          => true,      // use "strict" RFC compliant redirects.
+                    'referer'         => true,      // add a Referer header
+                    'protocols'       => ['http'], // only allow https URLs
+                    'track_redirects' => false
+                ]
+            ];
 
-        $ch = $this->getNewCurlRequest($options);
+        $request = $this->guzzleClient->request('POST',
+            $url,
+            $params
+        );
 
-
-//        curl_setopt_array($ch, $options);
-
-        $result = curl_exec($ch);
-
-        if(preg_match('/Location: .*?code=(.*)&.*\n/', $result, $code)) {
-            return $code[1];
+        $result = $request->getBody();
+        $headers = $request->getHeaders();
+        if (!empty($headers['Location'])) {
+            $urlParsed = parse_url($headers['Location'][0]);
+            parse_str($urlParsed['query'], $queryParams);
+            return $queryParams['code'];
         }
+
+        //If no location header, it must be error
+        preg_match('/(\{.*\})/', $result, $match);
+        $result = json_decode($match[1]);
+        $this->error($result);
     }
 
     public function setModeDev(): self

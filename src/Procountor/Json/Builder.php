@@ -21,7 +21,7 @@ class Builder {
         $this->resource = $resource;
     }
 
-    private function getArray()
+    public function getArray()
     {
         $reflection = new ReflectionClass($this->resource);
         $jsonArray = [];
