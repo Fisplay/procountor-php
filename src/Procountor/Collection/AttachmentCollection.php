@@ -1,10 +1,10 @@
 <?php
 namespace Procountor\Collection;
 
-use Procountor\Interfaces\AttachmentInterface;
+use Procountor\Interfaces\AttachmentCommon;
 
 class AttachmentCollection extends AbstractCollection {
-    public function addItem(AttachmentInterface $item): AbstractCollection
+    public function addItem(AttachmentCommon $item): AbstractCollection
     {
         $this->addItemToCollection($item);
         return $this;

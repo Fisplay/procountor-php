@@ -1,7 +1,7 @@
 <?php
 namespace Procountor\Response;
 
-use Procountor\Interfaces\AttachmentInterface;
+use Procountor\Interfaces\Read\Attachment AS AttachmentInterface;
 use stdClass;
 
 class Attachment implements AttachmentInterface {

@@ -94,7 +94,6 @@ class Client {
             $this->error($error);
         }
 
-        var_dump(json_encode($response));
         return $response;
     }
 
