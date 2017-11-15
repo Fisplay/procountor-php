@@ -6,12 +6,7 @@ use Procountor\Interfaces\DimensionItemValueInterface;
 use stdClass;
 
 
-class DimensionItemValue implements DimensionItemValueInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class DimensionItemValue extends AbstractResponse implements DimensionItemValueInterface {
 
     //Dimension ID. Must exist in the current environment. For a list of available dimensions, see the GET /dimensions endpoint. ,
     public function getDimensionId(): int

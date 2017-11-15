@@ -6,12 +6,7 @@ use Procountor\Interfaces\TravelInformationItemInterface;
 use DateTime;
 use stdClass;
 
-class TravelInformationItem implements TravelInformationItemInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class TravelInformationItem extends AbstractResponse implements TravelInformationItemInterface {
 
     //Travel departure date. ,
     public function getDeparture(): ?DateTime

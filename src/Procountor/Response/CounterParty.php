@@ -9,12 +9,7 @@ use Procountor\Interfaces\EInvoiceAddressInterface;
 use stdClass;
 
 
-class CounterParty implements CounterPartyInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class CounterParty extends AbstractResponse implements CounterPartyInterface {
 
     //Name of the contact person. Max length 28. ,
     public function getContactPersonName(): ?string

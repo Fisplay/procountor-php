@@ -6,12 +6,7 @@ use Procountor\Interfaces\BankAccountInterface;
 use stdClass;
 
 
-class BankAccount implements BankAccountInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class BankAccount extends AbstractResponse implements BankAccountInterface {
 
     //Bank account IBAN. If using a financing agreement, the account number must match the account of the specified financing agreement. The account number must be valid for the specified country. See http://support.procountor.com/en/maksuliikenne/pankkiyhteydet.html for more information about adding bank accounts in Procountor. ,
     public function getAccountNumber(): string

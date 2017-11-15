@@ -8,12 +8,7 @@ use DateTime;
 use stdClass;
 
 
-class EInvoiceAddress implements EInvoiceAddressInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class EInvoiceAddress extends AbstractResponse implements EInvoiceAddressInterface {
 
     //SALES_INVOICE Only. Operator code. Required if the invoiceChannel is ELECTRONIC_INVOICE and country is FINLAND. ,
     public function getOperator(): ?string

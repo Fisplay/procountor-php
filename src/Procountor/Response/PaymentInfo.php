@@ -8,12 +8,8 @@ use DateTime;
 use stdClass;
 
 
-class PaymentInfo implements PaymentInfoInterface {
-    private $data;
+class PaymentInfo extends AbstractResponse implements PaymentInfoInterface {
 
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
     //['BANK_TRANSFER', 'DIRECT_DEBIT', 'DIRECT_PAYMENT', 'CLEARING', 'CREDIT_CARD_CHARGE', 'FOREIGN_PAYMENT', 'OTHER', 'CASH', 'DOMESTIC_PAYMENT_PLUSGIRO', 'DOMESTIC_PAYMENT_BANKGIRO', 'DOMESTIC_PAYMENT_CREDITOR', 'DKLMPKRE', 'NETS'],
     function getPaymentMethod(): string
     {

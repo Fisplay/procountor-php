@@ -3,6 +3,7 @@ namespace Procountor\Resources;
 
 use Procountor\Client;
 use Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Response\AbstractResponse;
 
 class AbstractResourceRequest {
     protected $apiPath;
@@ -16,7 +17,7 @@ class AbstractResourceRequest {
         $this->client = $client;
     }
 
-    public function post(AbstractResourceInterface $item)
+    public function post(AbstractResourceInterface $item): AbstractResponse
     {
         if (!(get_class($item)!=$this->interfaceIn)) {
             throw new ClientException(sprintf('Invalid item. Expected %s, got %s', $this->interfaceIn, get_class($item)));
@@ -26,8 +27,10 @@ class AbstractResourceRequest {
         return $this->createResponse($response);
     }
 
-    public function get(int $id) {
-
+    public function get(int $id): AbstractResponse
+    {
+        $response = $this->client->get($this->apiPath, $id);
+        return $this->createResponse($response);
     }
 
 

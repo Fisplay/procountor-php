@@ -6,12 +6,7 @@ use Procountor\Interfaces\AddressInterface;
 use stdClass;
 
 
-class Address implements AddressInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class Address extends AbstractResponse implements AddressInterface {
 
     // Name ("first line") in the address. Max length 80. ,
     public function getName(): string

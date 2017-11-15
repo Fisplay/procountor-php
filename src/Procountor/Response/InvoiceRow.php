@@ -6,12 +6,7 @@ use Procountor\Interfaces\InvoiceRowInterface;
 use stdClass;
 
 
-class InvoiceRow implements InvoiceRowInterface {
-    private $data;
-
-    public function __construct(stdClass $data) {
-        $this->data = $data;
-    }
+class InvoiceRow extends AbstractResponse implements InvoiceRowInterface {
 
     //Unique identifier for a product. Links the invoice row to a product in the product register. Note that all other fields (name, price, ...) of an invoice row can be modified independently of the information in the product register. ,
     public function getProductId(): ?int
