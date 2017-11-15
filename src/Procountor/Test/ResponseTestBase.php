@@ -10,7 +10,7 @@ use DateTime;
 
 abstract class ResponseTestBase extends TestCase {
 
-    protected function assertObject($object, $data) {
+    protected function assertProcountorResponseObject($data, $object) {
         $reflection = new ReflectionClass($object);
         foreach ($reflection->getMethods() as $method) {
             if ($method->name=='__construct' || !preg_match('/get(.*)/', $method->name, $matches)) {
@@ -26,14 +26,14 @@ abstract class ResponseTestBase extends TestCase {
                     switch(true) {
                         case $ret instanceof AbstractCollection:
                             foreach($ret AS  $k => $item) {
-                                $this->assertObject($item, $excepted[$k]);
+                                $this->assertProcountorResponseObject($excepted[$k], $item);
                             }
                         break;
                         case $ret instanceof DateTime:
                             $this->assertEquals(new DateTime($excepted), $ret);
                         break;
                         default:
-                            $this->assertObject($ret, $excepted);
+                            $this->assertProcountorResponseObject($excepted, $ret);
                         break;
                     }
 

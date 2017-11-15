@@ -77,6 +77,7 @@ class Client {
     public function post(string $resourceName, AbstractResourceInterface $resource)
     {
         $params = $this->getRequestAuthHeaders();
+
         $builder = new Builder();
         $builder->setResource($resource);
         $params['json'] = $builder->getArray();

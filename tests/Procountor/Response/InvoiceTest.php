@@ -3,18 +3,13 @@ namespace Procountor\Response;
 
 
 use Procountor\Response\Invoice;
-use Procountor\Collection\AbstractCollection;
 use Procountor\Test\ResponseTestBase;
-
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use DateTime;
 
 class InvoiceTest extends ResponseTestBase {
 
 
     public function testResponseValid() {
-        $json = '{
+        $responsejson = '{
           "id": 0,
           "partnerId": 0,
           "type": "SALES_INVOICE",
@@ -123,10 +118,10 @@ class InvoiceTest extends ResponseTestBase {
             }
           ]
         }';
-        $invoiceParsed = json_decode($json);
-        $invoice = new Invoice($invoiceParsed);
+        $expectedInvoice = json_decode($responsejson);
+        $actualInvoice = new Invoice($expectedInvoice);
 
-        $this->assertObject($invoice, $invoiceParsed);
+        $this->assertProcountorResponseObject($expectedInvoice, $actualInvoice);
     }
 
 }

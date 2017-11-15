@@ -14,9 +14,9 @@ abstract class AbstractCollection implements IteratorAggregate, Countable
     //PHP 7.2 ONWARDS :)
     //abstract public function addItem(AbstractResourceInterface $item): AbstractCollection;
 
-    public function addItemToCollection($item)
+    public function addItemToCollection($item, $skipcheck = false)
     {
-        if (!($item instanceof AbstractResourceInterface)) {
+        if (!$skipcheck && !($item instanceof AbstractResourceInterface)) {
             throw new \Exception('Invalid item');
         }
 
