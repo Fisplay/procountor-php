@@ -45,7 +45,7 @@ interface InvoiceCommon extends AbstractResourceInterface {
     public function getInvoiceRows(): InvoiceRowCollection;
 
     //Invoice number from the biller in an external system. Max length 40. ,
-    public function getOriginalInvoiceNumber(): ?int;
+    public function getOriginalInvoiceNumber(): ?string;
 
     //First day of the delivery period. ,
     public function getDeliveryStartDate(): ?string;

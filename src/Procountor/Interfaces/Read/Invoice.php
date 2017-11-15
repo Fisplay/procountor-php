@@ -2,6 +2,7 @@
 namespace Procountor\Interfaces\Read;
 
 use Procountor\Interfaces\InvoiceCommon;
+use Procountor\Collection\AttachmentCollection;
 
 
 interface Invoice extends InvoiceCommon {
@@ -19,5 +20,5 @@ interface Invoice extends InvoiceCommon {
     public function getSum(): ?string;
 
     //List of attachments added to this invoice. Use POST and DELETE /attachments to add and delete attachments.
-    public function getAttachments(): ?AttachmentInterface;
+    public function getAttachments(): ?AttachmentCollection;
 }

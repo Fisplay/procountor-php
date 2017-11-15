@@ -1,10 +1,10 @@
 <?php
 namespace Procountor\Collection;
 
-use Procountor\Interfaces\InvoiceRowInterface;
+use Procountor\Interfaces\TravelInformationItemInterface;
 
-class TravelInformationCollection extends AbstractCollection {
-    public function addItem(TravelInformationCollection $item): AbstractCollection
+class TravelInformationItemsCollection extends AbstractCollection {
+    public function addItem(TravelInformationItemInterface $item): AbstractCollection
     {
         $this->items[] = $item;
         return $this;

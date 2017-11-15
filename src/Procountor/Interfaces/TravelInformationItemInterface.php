@@ -3,7 +3,7 @@ namespace Procountor\Interfaces;
 
 use DateTime;
 
-interface TravelInfoItemInterface extends AbstractResourceInterface {
+interface TravelInformationItemInterface extends AbstractResourceInterface {
     //Travel departure date. ,
     public function getDeparture(): ?DateTime;
 

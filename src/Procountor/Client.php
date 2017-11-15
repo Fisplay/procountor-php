@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Request;
 
 use Procountor\Json\Builder;
 use Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Response\Factory as ResponseFactory;
 
 class Client {
     private $accessToken;
@@ -92,6 +93,9 @@ class Client {
             $error->error_description = $response->constraintViolations[0]->errorCode;
             $this->error($error);
         }
+
+        var_dump(json_encode($response));
+        return $response;
     }
 
     public function get(string $resourceName) {
