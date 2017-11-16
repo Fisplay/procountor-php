@@ -4,7 +4,6 @@ namespace Procountor\Response;
 use Procountor\Interfaces\TravelInformationItemInterface;
 
 use DateTime;
-use stdClass;
 
 class TravelInformationItem extends AbstractResponse implements TravelInformationItemInterface {
 

@@ -27,15 +27,25 @@ class AbstractResourceRequest {
         return $this->createResponse($response);
     }
 
-    public function get(int $id): AbstractResponse
+    public function get(int $id = null): AbstractResponse
     {
-        $response = $this->client->get($this->apiPath, $id);
+        $path = $this->apiPath;
+        if($id) {
+            $path.='/'.$id;
+        }
+        $response = $this->client->get($path, $id);
         return $this->createResponse($response);
     }
 
 
-    public function put() {
+    public function put(int $id, AbstractResourceInterface $item): AbstractResponse
+    {
+        if (!(get_class($item)!=$this->interfaceIn)) {
+            throw new ClientException(sprintf('Invalid item. Expected %s, got %s', $this->interfaceIn, get_class($item)));
+        }
 
+        $response = $this->client->put($this->apiPath.'/'.$id, $item);
+        return $this->createResponse($response);
     }
 
     public function delete() {

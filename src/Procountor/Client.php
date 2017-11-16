@@ -76,12 +76,22 @@ class Client {
 
     public function post(string $resourceName, AbstractResourceInterface $resource)
     {
+        return $this->createRequest('POST', $resourceName, $resource);
+    }
+
+    public function put(string $resourceName, AbstractResourceInterface $resource)
+    {
+        return $this->createRequest('PUT', $resourceName, $resource);
+    }
+
+    private function createRequest($type, string $resourceName, AbstractResourceInterface $resource)
+    {
         $params = $this->getRequestAuthHeaders();
 
         $builder = new Builder();
         $builder->setResource($resource);
         $params['json'] = $builder->getArray();
-        $request = $this->guzzleClient->request('POST', $this->getResourceUrl($resourceName), $params);
+        $request = $this->guzzleClient->request($type, $this->getResourceUrl($resourceName), $params);
         $response = json_decode($request->getBody());
 
         if (!empty($response->error)) {

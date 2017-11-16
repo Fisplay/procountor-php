@@ -27,6 +27,12 @@ class Transaction extends AbstractResponse implements TransactionRead {
         return $this->data->account;
     }
 
+    public function setAccount(string $account): self
+    {
+        $this->data->account = $account;
+        return $this;
+    }
+
     //Transaction accounting value. Scale: 2. ,
     public function getAccountingValue(): float
     {
@@ -42,42 +48,46 @@ class Transaction extends AbstractResponse implements TransactionRead {
     //Transaction VAT type. = ['SALES', 'PURCHASE'],
     public function getVatType(): ?string
     {
-        return $this->data->vatType;
+        return $this->data->vatType ?? null;
     }
 
     //Transaction VAT status. This overrides the VAT status set for the parent ledger receipt. Use here the numeric parts of VAT status codes listed in "VAT defaults" in Procountor. For example, for VAT status code "vat_12", use value 12. The VAT status used must be enabled for the current receipt type (sales/purchase). ,
     public function getVatStatus(): ?int
     {
-        return $this->data->vatStatus;
+        return $this->data->vatStatus ?? null;
     }
 
     //Transaction description. Visible on ledger receipt printouts. Max length 255. ,
     public function getDescription(): ?string
     {
-        return $this->data->description;
+        return $this->data->description ?? null;
     }
 
     //Transaction balance code. Only available if the use balance sheet setting is enabled. Max length 255. ,
     public function getBalanceCode(): ?string
     {
-        return $this->data->balanceCode;
+        return $this->data->balanceCode ?? null;
     }
 
     //List of allocation ids related to the transaction. Only for GET cannot be modified through PUT or POST. ,
     public function getAllocations(): ?array
     {
-        return (array)$this->data->allocations;
+        return $this->data->allocations ?? null;
     }
 
     //Partner id. Can be provided in Norwegian environments only. The given partner id must match a partner of type different than PERSON, existing in the current Procountor environment. ,
     public function getPartnerId(): ?int
     {
-        return $this->data->partnerId;
+        return $this->data->partnerId ?? null;
     }
 
     //Values of dimension items associated with this transaction. The number of provided dimension items must be within the dimension max count defined by the purchased Procountor license. Provided dimension pairs (dimension id - item id) must be unique within the list provided. ,
     public function getDimensionItemValues(): ?DimensionItemValueCollection
     {
+        if (empty($this->data->dimensionItemValues)) {
+            return null;
+        }
+
         $collection = new DimensionItemValueCollection();
         foreach ($this->data->dimensionItemValues as $dimensionItemValuedata) {
             $dimensionItemValue = new DimensionItemValue($dimensionItemValuedata);
@@ -89,6 +99,6 @@ class Transaction extends AbstractResponse implements TransactionRead {
     //VAT deduction percentage for the transaction.
     public function getVatDeductionPercent(): ?float
     {
-        return $this->data->vatDeductionPercent;
+        return $this->data->vatDeductionPercent ?? null;
     }
 }

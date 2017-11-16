@@ -43,7 +43,7 @@ abstract class ResponseTestBase extends TestCase {
                         $excepted,
                         $ret,
                         sprintf(
-                            'Field %s of %s value not matching',
+                            'Field "%s" of %s value not matching',
                             $field,
                             get_class($object)
                         )
