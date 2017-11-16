@@ -5,6 +5,8 @@ use Procountor\Client;
 use Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Response\AbstractResponse;
 
+use stdClass;
+
 class AbstractResourceRequest {
     protected $apiPath;
     protected $interfaceIn;
@@ -34,6 +36,8 @@ class AbstractResourceRequest {
             $path.='/'.$id;
         }
         $response = $this->client->get($path, $id);
+
+
         return $this->createResponse($response);
     }
 
@@ -54,7 +58,21 @@ class AbstractResourceRequest {
 
     private function createResponse($response) {
         $clsOut = $this->interfaceOut;
-        return new $clsOut($response);
+        switch(gettype($response)) {
+            case 'object':
+                return new $clsOut($response);
+            break;
+            case 'array':
+                $clsOut .= 'List';
+                //abstract response needs stdclass in
+                $response = (object)['items' => $response];
+                return new $clsOut($response);
+
+            break;
+            default:
+                throw new ClientException('Invalid response!');
+            break;
+        }
     }
 
 }
