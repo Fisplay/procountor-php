@@ -17,6 +17,7 @@ class Client {
     private $state = null;
     private $loginParameters = [];
     private $guzzleClient;
+    private $debug = false;
 
     private static $urls = [
         'prod' => [
@@ -68,7 +69,7 @@ class Client {
                 'Authorization' => 'Bearer '.$this->accessToken
             ],
             'http_errors' => false,
-
+            'debug' => $this->debug
         ];
 
         return $headers;
@@ -138,7 +139,8 @@ class Client {
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
-                'form_params' => $post
+                'form_params' => $post,
+                'debug' => $this->debug
             ]
 
         );
@@ -182,13 +184,22 @@ class Client {
                     'referer'         => true,      // add a Referer header
                     'protocols'       => ['http'], // only allow https URLs
                     'track_redirects' => false
-                ]
+                ],
+                'debug' => $this->debug
             ];
+
 
         $request = $this->guzzleClient->request('POST',
             $url,
             $params
         );
+
+        if ($this->debug) {
+            echo "---------------------------------\n\n\nForm_params: ";
+            var_dump(http_build_query($params['form_params']));
+            echo "\n";
+        }
+
 
         $result = $request->getBody();
         $headers = $request->getHeaders();
@@ -230,6 +241,10 @@ class Client {
     private function getBaseUri(): string
     {
         return self::$urls[$this->mode]['urlBase'];
+    }
+
+    public function setDebug(bool $debug) {
+        $this->debug = $debug;
     }
 
 }
