@@ -4,6 +4,7 @@ namespace Procountor\Resources;
 use Procountor\Client;
 use Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Response\AbstractResponse;
+use Procountor\ClientException;
 
 use stdClass;
 
@@ -70,7 +71,7 @@ class AbstractResourceRequest {
 
             break;
             default:
-                throw new ClientException('Invalid response!');
+                throw new ClientException('Invalid response or server error!');
             break;
         }
     }

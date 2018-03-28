@@ -50,7 +50,7 @@ class InvoiceRow extends AbstractResponse implements InvoiceRowInterface {
     }
 
     //Product VAT percentage. Must be a percentage currently in use for the company. ,
-    public function getVatPercent(): float
+    public function getVatPercent(): int
     {
         return $this->data->vatPercent;
     }
