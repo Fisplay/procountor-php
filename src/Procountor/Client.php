@@ -84,27 +84,55 @@ class Client {
         return $this->createRequest('PUT', $resourceName, $resource);
     }
 
-    public function request(string $url, string $type, string $headers, string $json)
+    public function request(string $url, string $type, string $headers, string $data)
     {
         $params = [
             'headers' => json_decode($headers, true),
-            'json' => json_decode($json, true),
             'http_errors' => false,
-            'debug' => $this->debug
+            'debug' => $this->debug,
+            'allow_redirects' => [
+                'max'             => 0,        // allow at most 10 redirects.
+                'strict'          => true,      // use "strict" RFC compliant redirects.
+                'referer'         => true,      // add a Referer header
+                'protocols'       => ['http'], // only allow https URLs
+                'track_redirects' => false
+            ],
         ];
+        
+        if ($params['headers']['Content-Type']=='application/json') {
+            $params['json'] = json_decode($data, true);
+        } else {
+            $params['form_params'] = json_decode($data, true);
+        }
+        
         $request = $this->guzzleClient->request($type, $url, $params);
-        
-        $response = json_decode($request->getBody());
-        
+            
         $this->logger->log(
             $url,
             $type,
             $headers,
-            $json,
+            $data,
             $request->getStatusCode(),
             json_encode($request->getHeaders()),
-            json_encode($response)
+            json_encode($request->getBody())
         );      
+        
+
+        return $request;
+    }
+    
+    private function createRequest($type, string $resourceName, AbstractResourceInterface $resource = null)
+    {
+        $requestBody = [];
+        if ($resource) {
+            $builder = new Builder();
+            $builder->setResource($resource);
+            $requestBody = $builder->getArray();
+        }
+        
+        $request = $this->request($this->getResourceUrl($resourceName), $type, json_encode($this->getRequestAuthHeaders()), json_encode($requestBody));
+        $response = json_decode($request->getBody());
+
         
         if (!empty($response->error)) {
             $this->error($response);
@@ -118,17 +146,6 @@ class Client {
         }
         
         return $response;
-    }
-    
-    private function createRequest($type, string $resourceName, AbstractResourceInterface $resource = null)
-    {
-        $requestBody = [];
-        if ($resource) {
-            $builder = new Builder();
-            $builder->setResource($resource);
-            $requestBody = $builder->getArray();
-        }
-        return $this->request($this->getResourceUrl($resourceName), $type, $this->getRequestAuthHeaders(), $requestBody);
     }
 
     public function get(string $resourceName) {
@@ -155,18 +172,11 @@ class Client {
                 $this->getUrlAccessToken()
         ).http_build_query($post);
 
-        $request = $this->guzzleClient->request('POST',
-            $url,
-            [
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-                'form_params' => $post,
-                'debug' => $this->debug
-            ]
-
-        );
-
+        $headers = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
+        
+        $request = $this->request($url, 'POST', json_encode($headers), json_encode($post));
         $result = json_decode($request->getBody());
 
         if (!empty($result->error)) {
@@ -188,33 +198,24 @@ class Client {
                 $this->loginParameters['clientId'],
                 $this->getState()
             );
-        $params = [
-                'headers' => [
-                        'Content-Type' => 'application/x-www-form-urlencoded',
-                    ],
-                'form_params' => [
-                    'response_type' => 'code',
-                    'username' => urlencode($this->loginParameters['username']),
-                    'password' => urlencode($this->loginParameters['password']),
-                    'company' => urlencode($this->loginParameters['company']),
-                    'redirect_uri' => $this->loginParameters['redirectUri'],
-                ],
-                'http_errors' => false,
-                'allow_redirects' => [
-                    'max'             => 0,        // allow at most 10 redirects.
-                    'strict'          => true,      // use "strict" RFC compliant redirects.
-                    'referer'         => true,      // add a Referer header
-                    'protocols'       => ['http'], // only allow https URLs
-                    'track_redirects' => false
-                ],
-                'debug' => $this->debug
-            ];
+        $headers = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
+        
+        $data = [
+            'response_type' => 'code',
+            'username' => urlencode($this->loginParameters['username']),
+            'password' => urlencode($this->loginParameters['password']),
+            'company' => urlencode($this->loginParameters['company']),
+            'redirect_uri' => $this->loginParameters['redirectUri'],
+        ];
+        
+        $request = $this->request($url, 'POST', json_encode($headers), json_encode($data));
 
+        
+        $result = $request->getBody();
+        $headers = $request->getHeaders();
 
-        $request = $this->guzzleClient->request('POST',
-            $url,
-            $params
-        );
 
         if ($this->debug) {
             echo "---------------------------------\n\n\nForm_params: ";
@@ -223,8 +224,7 @@ class Client {
         }
 
 
-        $result = $request->getBody();
-        $headers = $request->getHeaders();
+
         if (!empty($headers['Location'])) {
             $urlParsed = parse_url($headers['Location'][0]);
             parse_str($urlParsed['query'], $queryParams);

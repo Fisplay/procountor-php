@@ -1,8 +1,13 @@
 # procountor-php
 
+use Procountor\Interfaces\LoggerInterface;
+
+$yourLogger = new class() implements LoggerInterface {....}
 
 
-$client = new Client();
+
+$client = new Client($yourLogger);
+
 $client->login(
     $clientId,
     $clientSecret,
