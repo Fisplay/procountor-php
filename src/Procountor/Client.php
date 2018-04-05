@@ -9,6 +9,7 @@ use GuzzleHttp\Psr7\Request;
 use Procountor\Json\Builder;
 use Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Response\Factory as ResponseFactory;
+use Procountor\Interfaces\LoggerInterface;
 
 class Client {
     private $accessToken;
@@ -18,6 +19,7 @@ class Client {
     private $loginParameters = [];
     private $guzzleClient;
     private $debug = false;
+    private $logger = null;
 
     private static $urls = [
         'prod' => [
@@ -32,10 +34,11 @@ class Client {
         ],
     ];
 
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
         $this->guzzleClient = new GuzzleClient(['base_uri' => $this->getBaseUri()]);
         $this->state = rand().strtotime('now');
+        $this->logger = $logger;
     }
 
     public function login(
@@ -64,12 +67,8 @@ class Client {
 
     private function getRequestAuthHeaders() {
         $headers = [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->accessToken
-            ],
-            'http_errors' => false,
-            'debug' => $this->debug
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '.$this->accessToken
         ];
 
         return $headers;
@@ -85,16 +84,28 @@ class Client {
         return $this->createRequest('PUT', $resourceName, $resource);
     }
 
-    private function createRequest($type, string $resourceName, AbstractResourceInterface $resource)
+    public function request(string $url, string $type, string $headers, string $json)
     {
-        $params = $this->getRequestAuthHeaders();
-
-        $builder = new Builder();
-        $builder->setResource($resource);
-        $params['json'] = $builder->getArray();
-        $request = $this->guzzleClient->request($type, $this->getResourceUrl($resourceName), $params);
+        $params = [
+            'headers' => json_decode($headers, true),
+            'json' => json_decode($json, true),
+            'http_errors' => false,
+            'debug' => $this->debug
+        ];
+        $request = $this->guzzleClient->request($type, $url, $params);
+        
         $response = json_decode($request->getBody());
-
+        
+        $this->logger->log(
+            $url,
+            $type,
+            $headers,
+            $json,
+            $request->getStatusCode(),
+            json_encode($request->getHeaders()),
+            json_encode($response)
+        );      
+        
         if (!empty($response->error)) {
             $this->error($response);
         }
@@ -105,13 +116,24 @@ class Client {
             $error->error_description = $response->constraintViolations[0]->errorCode;
             $this->error($error);
         }
-
+        
         return $response;
+    }
+    
+    private function createRequest($type, string $resourceName, AbstractResourceInterface $resource = null)
+    {
+        $requestBody = [];
+        if ($resource) {
+            $builder = new Builder();
+            $builder->setResource($resource);
+            $requestBody = $builder->getArray();
+        }
+        return $this->request($this->getResourceUrl($resourceName), $type, $this->getRequestAuthHeaders(), $requestBody);
     }
 
     public function get(string $resourceName) {
-        $response = $this->guzzleClient->request('GET', $this->getResourceUrl($resourceName), $this->getRequestAuthHeaders())->getBody();
-        return json_decode($response);
+        //$response = $this->guzzleClient->request('GET', $this->getResourceUrl($resourceName), $this->getRequestAuthHeaders())->getBody();
+        return $this->createRequest('GET', $resourceName);
     }
 
     private function getResourceUrl(string $resourceName, $id = null): string

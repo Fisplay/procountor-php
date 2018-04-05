@@ -5,9 +5,11 @@ use PHPUnit\Framework\TestCase;
 use Procountor\Interfaces\AbstractResourceInterface;
 use Exception;
 
-class AbstractCollectionTest extends TestCase {
+class AbstractCollectionTest extends TestCase
+{
 
-    public function testAddInvalidItemToCollection() {
+    public function testAddInvalidItemToCollection()
+    {
         $collection = $this->getTestColleciton();
 
         $this->expectException(Exception::class);
@@ -16,7 +18,8 @@ class AbstractCollectionTest extends TestCase {
         $this->assertEquals(1, count($collection));
     }
 
-   public function testAddValidItemToCollection() {
+   public function testAddValidItemToCollection()
+   {
         $collection = $this->getTestColleciton();
 
         $collection->addItemToCollection(
@@ -26,7 +29,8 @@ class AbstractCollectionTest extends TestCase {
         $this->assertEquals(1, count($collection));
     }
 
-    public function testLoopThroughCollection() {
+    public function testLoopThroughCollection()
+    {
         $collection = $this->getTestColleciton();
 
 
@@ -47,8 +51,10 @@ class AbstractCollectionTest extends TestCase {
     }
 
 
-    private function getTestResource() {
-        return new class() implements AbstractResourceInterface {
+    private function getTestResource()
+    {
+        return new class() implements AbstractResourceInterface
+        {
             public function getA(): string
             {
                 return 'A';
@@ -57,7 +63,8 @@ class AbstractCollectionTest extends TestCase {
     }
 
     private function getTestColleciton() {
-        $collection = new class() extends AbstractCollection {
+        $collection = new class() extends AbstractCollection
+        {
 
         };
 
