@@ -23,12 +23,12 @@ class Client {
 
     private static $urls = [
         'prod' => [
-            'urlBase' => 'https://api.procountor.com/procountor.api.v4/api',
+            'urlBase' => 'https://api.procountor.com/procountor.api.v6/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
         'dev' => [
-            'urlBase' => 'https://api-test.procountor.com/procountor.api.v4/api',
+            'urlBase' => 'https://api-test.procountor.com/procountor.api.v6/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
@@ -98,15 +98,15 @@ class Client {
                 'track_redirects' => false
             ],
         ];
-        
+
         if ($params['headers']['Content-Type']=='application/json') {
             $params['json'] = json_decode($data, true);
         } else {
             $params['form_params'] = json_decode($data, true);
         }
-        
+
         $request = $this->guzzleClient->request($type, $url, $params);
-            
+
         $this->logger->log(
             $url,
             $type,
@@ -115,12 +115,12 @@ class Client {
             $request->getStatusCode(),
             json_encode($request->getHeaders()),
             json_encode($request->getBody())
-        );      
-        
+        );
+
 
         return $request;
     }
-    
+
     private function createRequest($type, string $resourceName, AbstractResourceInterface $resource = null)
     {
         $requestBody = [];
@@ -129,11 +129,11 @@ class Client {
             $builder->setResource($resource);
             $requestBody = $builder->getArray();
         }
-        
+
         $request = $this->request($this->getResourceUrl($resourceName), $type, json_encode($this->getRequestAuthHeaders()), json_encode($requestBody));
         $response = json_decode($request->getBody());
 
-        
+
         if (!empty($response->error)) {
             $this->error($response);
         }
@@ -144,7 +144,7 @@ class Client {
             $error->error_description = $response->constraintViolations[0]->errorCode;
             $this->error($error);
         }
-        
+
         return $response;
     }
 
@@ -175,7 +175,7 @@ class Client {
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];
-        
+
         $request = $this->request($url, 'POST', json_encode($headers), json_encode($post));
         $result = json_decode($request->getBody());
 
@@ -201,7 +201,7 @@ class Client {
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];
-        
+
         $data = [
             'response_type' => 'code',
             'username' => urlencode($this->loginParameters['username']),
@@ -209,17 +209,17 @@ class Client {
             'company' => urlencode($this->loginParameters['company']),
             'redirect_uri' => $this->loginParameters['redirectUri'],
         ];
-        
+
         $request = $this->request($url, 'POST', json_encode($headers), json_encode($data));
 
-        
+
         $result = $request->getBody();
         $headers = $request->getHeaders();
 
 
         if ($this->debug) {
             echo "---------------------------------\n\n\nForm_params: ";
-            var_dump(http_build_query($params['form_params']));
+            var_dump(http_build_query($data));
             echo "\n";
         }
 
@@ -234,7 +234,7 @@ class Client {
         //If no location header, it must be error
         preg_match('/(\{.*\})/', $result, $match);
         $result = json_decode($match[1]);
-        $this->error($result);
+        $this->error($result ?: (object)['error_description' => 'API ERROR']);
     }
 
     public function setModeDev(): self
