@@ -52,7 +52,7 @@ To get an invoice with ID = 1212:
 
 To post a new invoice, you need first to implement your own adapter:
 
-    $newinvoice = new class($yourdata) extends \Procountor\Interfaces\Write\Invoice {
+    $newInvoice = new class($yourdata) extends \Procountor\Interfaces\Write\Invoice {
         private $data;
 
         public function __construct($yourdata) {
