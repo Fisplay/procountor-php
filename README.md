@@ -20,13 +20,13 @@ This opensource project is about ...
     $client = new Client($yourLogger);
 
     $client->login(
-       $clientId,
-       $clientSecret,
-       $redirectUri,
-       $username,
-       $password,
-       $company
-   );
+        $clientId,
+        $clientSecret,
+        $redirectUri,
+        $username,
+        $password,
+        $company
+    );
 
 <a name="apiconnection"></a>
 ## API connection
@@ -52,20 +52,20 @@ To get an invoice with ID = 1212:
 
 To post a new invoice, you need first to implement your own adapter:
 
-   $newinvoice = new class($yourdata) extends \Procountor\Interfaces\Write\Invoice {
-       private $data;
+    $newinvoice = new class($yourdata) extends \Procountor\Interfaces\Write\Invoice {
+        private $data;
 
-       public function __construct($yourdata) {
-           $this->data = $yourdata;
-       }
+        public function __construct($yourdata) {
+            $this->data = $yourdata;
+        }
 
-       // then create the related getters:
+        // then create the related getters:
 
-       public function getPartnerId() {
-           return $this->data->partnerid;
-       }
-       // ...etc
-   }
+        public function getPartnerId() {
+            return $this->data->partnerid;
+        }
+        // ...etc
+    }
 
 Finally you can properly post the invoice:
 
