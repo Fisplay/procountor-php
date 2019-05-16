@@ -128,11 +128,18 @@ class Client {
             $builder = new Builder();
             $builder->setResource($resource);
             $requestBody = $builder->getArray();
+            //echo json_encode($requestBody);
         }
 
         $request = $this->request($this->getResourceUrl($resourceName), $type, json_encode($this->getRequestAuthHeaders()), json_encode($requestBody));
+        if($request->getStatusCode()!=200) {
+            //var_dump($requestBody, $request->getStatusCode());
+            $error = new \stdClass();
+            $error->error = $request->getStatusCode();
+            $error->error_description = $request->getStatusCode();
+            $this->error($error);
+        }
         $response = json_decode($request->getBody());
-
 
         if (!empty($response->error)) {
             $this->error($response);
