@@ -86,4 +86,6 @@ interface InvoiceCommon extends AbstractResourceInterface {
     //Travel information items. Travel invoice may have one or more travel information items containing departure date, return date, destinations and travel purpose. ,
     public function getTravelInformationItems(): ?TravelInformationItemsCollection;
 
+    //VAT status. Use here the numeric parts of VAT status codes listed in "VAT defaults" in Procountor. For example, for VAT status code "vat_12", use value 12.
+    public function getVatStatus(): int;
 }

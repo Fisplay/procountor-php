@@ -95,6 +95,7 @@ class InvoiceTest extends ResponseTestBase {
           "language": "ENGLISH",
           "additionalInformation": "string",
           "vatCountry": "SWEDEN",
+          "vatStatus": "1",
           "ledgerReceiptId": 0,
           "notes": "string",
           "factoringContractId": 0,
