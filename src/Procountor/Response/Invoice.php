@@ -223,4 +223,9 @@ class Invoice extends AbstractResponse implements InvoiceRead {
         return $collection;
     }
 
+    //VAT status. Use here the numeric parts of VAT status codes listed in "VAT defaults" in Procountor. For example, for VAT status code "vat_12", use value 12.
+    public function getVatStatus(): int
+    {
+        return $this->data->vatStatus;
+    }
 }
