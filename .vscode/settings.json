@@ -1,0 +1,15 @@
+{
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "phpunit.execPath": "vendor/bin/phpunit",
+  "saveAndRunExt": {
+    "commands": [
+      {
+        "match": "\\.php$",
+        "isShellCommand": false,
+        // "cmd": "phpunit.client.test.last",
+        "cmd": "yet-phpunit.run-previous",
+      },
+    ],
+  },
+}
