@@ -147,8 +147,7 @@ class Client {
 
         if(!empty($response->constraintViolations)) {
             $error = new \stdClass();
-            $error->error = $response->constraintViolations[0]->field;
-            $error->error_description = $response->constraintViolations[0]->errorCode;
+            $error->errors = [['message' =>  $response->constraintViolations[0]->errorCode]];
             $this->error($error);
         }
 
@@ -186,7 +185,7 @@ class Client {
         $request = $this->request($url, 'POST', json_encode($headers), json_encode($post));
         $result = json_decode($request->getBody());
 
-        if (!empty($result->error)) {
+        if (!empty($result->errors)) {
             $this->error($result);
         }
         return $result->access_token;
@@ -241,7 +240,7 @@ class Client {
         //If no location header, it must be error
         preg_match('/(\{.*\})/', $result, $match);
         $result = json_decode($match[1]);
-        $this->error($result ?: (object)['error_description' => 'API ERROR']);
+        $this->error($result ?: (object)['errors' => [['message' => 'API ERROR']]]);
     }
 
     public function setModeDev(): self
