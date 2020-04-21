@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "bmewburn.vscode-intelephense-client",
+    "danilopolani.yet-another-phpunit",
+    "EditorConfig.EditorConfig",
+    "ikappas.phpcs",
+    "padjon.save-and-run-ext",
+  ],
+}
