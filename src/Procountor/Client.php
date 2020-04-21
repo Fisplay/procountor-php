@@ -141,7 +141,7 @@ class Client {
         }*/
         $response = json_decode($request->getBody());
 
-        if (!empty($response->error)) {
+        if (!empty($response->errors)) {
             $this->error($response);
         }
 
@@ -193,7 +193,7 @@ class Client {
     }
 
     private function error($result) {
-        throw new ClientException($result->error_description);
+        throw new ClientException($result->errors[0]->message);
 
     }
 
