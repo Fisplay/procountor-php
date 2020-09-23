@@ -2,18 +2,13 @@
 namespace Procountor;
 
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Psr7\Request;
-
-
-
-use Procountor\Json\Builder;
 use Procountor\Interfaces\AbstractResourceInterface;
-use Procountor\Response\Factory as ResponseFactory;
 use Procountor\Interfaces\LoggerInterface;
+use Procountor\Json\Builder;
 
-class Client {
+class Client 
+{
     private $accessToken;
-    private $oauth2Provider = null;
     private $mode = 'prod';
     private $state = null;
     private $loginParameters = [];
@@ -23,12 +18,12 @@ class Client {
 
     private static $urls = [
         'prod' => [
-            'urlBase' => 'https://api.procountor.com/v2004/api',
+            'urlBase' => 'https://api.procountor.com/v2008/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
         'dev' => [
-            'urlBase' => 'https://api-test.procountor.com/v2004/api',
+            'urlBase' => 'https://api-test.procountor.com/v2008/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
@@ -48,9 +43,7 @@ class Client {
         string $username,
         string $password,
         int $company
-    ): self
-    {
-
+    ): self {
         $this->loginParameters = [
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
@@ -65,7 +58,8 @@ class Client {
         return $this;
     }
 
-    private function getRequestAuthHeaders() {
+    private function getRequestAuthHeaders()
+    {
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer '.$this->accessToken
@@ -154,7 +148,8 @@ class Client {
         return $response;
     }
 
-    public function get(string $resourceName) {
+    public function get(string $resourceName)
+    {
         //$response = $this->guzzleClient->request('GET', $this->getResourceUrl($resourceName), $this->getRequestAuthHeaders())->getBody();
         return $this->createRequest('GET', $resourceName);
     }
@@ -164,7 +159,7 @@ class Client {
         return sprintf('%s/%s', $this->getBaseUri(), $resourceName);
     }
 
-     private function getAccessTokenByAuthorizationCode(string $code): string
+    private function getAccessTokenByAuthorizationCode(string $code): string
     {
 
         $post = [
@@ -191,9 +186,9 @@ class Client {
         return $result->access_token;
     }
 
-    private function error($result) {
+    private function error($result)
+    {
         throw new ClientException($result->errors[0]->message);
-
     }
 
     private function getAuthorizationCode(): string
@@ -271,7 +266,8 @@ class Client {
         return self::$urls[$this->mode]['urlBase'];
     }
 
-    public function setDebug(bool $debug) {
+    public function setDebug(bool $debug)
+    {
         $this->debug = $debug;
     }
 

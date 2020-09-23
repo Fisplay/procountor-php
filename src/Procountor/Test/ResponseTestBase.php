@@ -1,16 +1,15 @@
 <?php
 namespace Procountor\Test;
 
-use Procountor\Response\Invoice;
 use Procountor\Collection\AbstractCollection;
-
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use DateTime;
 
-abstract class ResponseTestBase extends TestCase {
-
-    protected function assertProcountorResponseObject($data, $object) {
+abstract class ResponseTestBase extends TestCase
+{
+    protected function assertProcountorResponseObject($data, $object)
+    {
         $reflection = new ReflectionClass($object);
         foreach ($reflection->getMethods() as $method) {
             if ($method->name=='__construct' || !preg_match('/get(.*)/', $method->name, $matches)) {
@@ -50,7 +49,6 @@ abstract class ResponseTestBase extends TestCase {
                     );
                 break;
             }
-            //var_dump();
         }
     }
 }

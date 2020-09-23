@@ -10,6 +10,6 @@ interface AttachmentCommon extends AbstractResourceInterface {
     public function getReferenceType(): string;
 
     //Unique identifier of the referenced object. Exception: for JOURNAL type ledger receipts, use the value of invoiceId referring to the associated invoice. ,
-    public function getReferenceId(): string;
+    public function getReferenceId(): ?string;
 
 }

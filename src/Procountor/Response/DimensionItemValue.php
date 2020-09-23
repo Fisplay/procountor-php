@@ -9,7 +9,7 @@ use stdClass;
 class DimensionItemValue extends AbstractResponse implements DimensionItemValueInterface {
 
     //Dimension ID. Must exist in the current environment. For a list of available dimensions, see the GET /dimensions endpoint. ,
-    public function getDimensionId(): int
+    public function getDimensionId(): ?int
     {
         return $this->data->dimensionId;
     }

@@ -14,7 +14,7 @@ interface Invoice extends InvoiceCommon {
     public function getInvoiceNumber(): int;
 
     //ID of the ledger receipt linked to this invoice. A ledger receipt is linked to every invoice for holding its accounting information. For defining ledger accounts, dimensions or VAT status regarding the invoice, modify the ledger receipt. See PUT /ledgerreceipts for more info. ,
-    public function getLedgerReceiptId(): int;
+    public function getLedgerReceiptId(): ?int;
 
     //Only for invoice type PERIODIC_TAX_RETURN. Ignored for other types. Contains the total sum of invoice. ,
     public function getSum(): ?string;
