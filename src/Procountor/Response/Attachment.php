@@ -24,7 +24,7 @@ class Attachment extends AbstractResponse implements AttachmentInterface {
         return $this->data->referenceType;
     }
     //Unique identifier of the referenced object. Exception: for JOURNAL type ledger receipts, use the value of invoiceId referring to the associated invoice. ,
-    public function getReferenceId(): string
+    public function getReferenceId(): ?string
     {
         return $this->data->referenceId;
     }

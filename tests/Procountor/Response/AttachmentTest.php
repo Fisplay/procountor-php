@@ -12,7 +12,7 @@ class AttachmentTest extends ResponseTestBase {
           "id": 0,
           "name": "Picture.jpg",
           "referenceType": "INVOICE",
-          "referenceId": 0,
+          "referenceId": null,
           "mimeType": "string"
         }';
         $exceptedInvoice = json_decode($jsonresponse);

@@ -12,7 +12,6 @@ use Procountor\Collection\InvoiceRowCollection;
 use Procountor\Collection\TravelInformationItemsCollection;
 
 use DateTime;
-use stdClass;
 
 class Invoice extends AbstractResponse implements InvoiceRead {
 
@@ -31,7 +30,7 @@ class Invoice extends AbstractResponse implements InvoiceRead {
     }
 
     //ID of the ledger receipt linked to this invoice. A ledger receipt is linked to every invoice for holding its accounting information. For defining ledger accounts, dimensions or VAT status regarding the invoice, modify the ledger receipt. See PUT /ledgerreceipts for more info. ,
-    public function getLedgerReceiptId(): int
+    public function getLedgerReceiptId(): ?int
     {
         return $this->data->ledgerReceiptId;
 

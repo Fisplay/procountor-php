@@ -9,7 +9,7 @@ class LedgerReceiptTest extends ResponseTestBase {
 
     public function testResponseValid() {
         $jsonresponse = '{
-          "receiptId": 0,
+          "receiptId": null,
           "type": "JOURNAL",
           "status": "EMPTY",
           "name": "string",
@@ -17,7 +17,7 @@ class LedgerReceiptTest extends ResponseTestBase {
           "vatType": "SALES",
           "vatStatus": 0,
           "vatProcessing": "SWEDEN",
-          "invoiceId": 0,
+          "invoiceId": null,
           "invoiceNotes": "string",
           "invoiceNumber": 0,
           "accountantsNotes": "string",
@@ -31,7 +31,7 @@ class LedgerReceiptTest extends ResponseTestBase {
           "vatDate": "2017-11-15",
           "transactions": [
             {
-              "transactionId": 0,
+              "id": 0,
               "transactionType": "RECONCILIATION_ENTRY",
               "account": "string",
               "accountingValue": 0,
@@ -43,10 +43,10 @@ class LedgerReceiptTest extends ResponseTestBase {
               "allocations": [
                 0
               ],
-              "partnerId": 0,
+              "partnerId": null,
               "dimensionItemValues": [
                 {
-                  "dimensionId": 0,
+                  "dimensionId": null,
                   "itemId": 0,
                   "value": 0
                 }
@@ -59,7 +59,7 @@ class LedgerReceiptTest extends ResponseTestBase {
               "id": 0,
               "name": "Picture.jpg",
               "referenceType": "INVOICE",
-              "referenceId": 0,
+              "referenceId": null,
               "mimeType": "string"
             }
           ]

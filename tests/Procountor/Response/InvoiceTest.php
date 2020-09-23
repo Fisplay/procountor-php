@@ -11,7 +11,7 @@ class InvoiceTest extends ResponseTestBase {
     public function testResponseValid() {
         $responsejson = '{
           "id": 0,
-          "partnerId": 0,
+          "partnerId": null,
           "type": "SALES_INVOICE",
           "status": "UNFINISHED",
           "date": "2017-11-15",
@@ -73,7 +73,7 @@ class InvoiceTest extends ResponseTestBase {
           "orderReference": "string",
           "invoiceRows": [
             {
-              "productId": 0,
+              "productId": null,
               "product": "string",
               "productCode": "string",
               "quantity": 0,
@@ -96,9 +96,9 @@ class InvoiceTest extends ResponseTestBase {
           "additionalInformation": "string",
           "vatCountry": "SWEDEN",
           "vatStatus": "1",
-          "ledgerReceiptId": 0,
+          "ledgerReceiptId": null,
           "notes": "string",
-          "factoringContractId": 0,
+          "factoringContractId": null,
           "factoringText": "string",
           "sum": 0,
           "travelInformationItems": [
@@ -114,7 +114,7 @@ class InvoiceTest extends ResponseTestBase {
               "id": 0,
               "name": "Picture.jpg",
               "referenceType": "INVOICE",
-              "referenceId": 0,
+              "referenceId": null,
               "mimeType": "string"
             }
           ]
