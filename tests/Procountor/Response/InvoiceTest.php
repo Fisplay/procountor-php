@@ -5,10 +5,10 @@ namespace Procountor\Response;
 use Procountor\Response\Invoice;
 use Procountor\Test\ResponseTestBase;
 
-class InvoiceTest extends ResponseTestBase {
-
-
-    public function testResponseValid() {
+class InvoiceTest extends ResponseTestBase
+{
+    public function testResponseValid()
+    {
         $responsejson = '{
           "id": 0,
           "partnerId": null,
@@ -124,5 +124,4 @@ class InvoiceTest extends ResponseTestBase {
 
         $this->assertProcountorResponseObject($expectedInvoice, $actualInvoice);
     }
-
 }
