@@ -11,7 +11,7 @@ interface PaymentInfoInterface extends AbstractResourceInterface {
     function getCurrency(): string;
 
     //Payment reference code. If specified, must be a valid reference code, if not specified the code will be automatically generated. The last digit is a check digit. ,
-    function getReferenceCode(): ?string;
+    function getBankReferenceCode(): ?string;
 
     //Payment bank account. Not required if payment method is cash. ,
     function getBankAccount(): ?BankAccountInterface;
