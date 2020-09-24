@@ -22,9 +22,9 @@ class PaymentInfo extends AbstractResponse implements PaymentInfoInterface {
         return $this->data->currency;
     }
     //Payment reference code. If specified, must be a valid reference code, if not specified the code will be automatically generated. The last digit is a check digit. ,
-    function getReferenceCode(): ?string
+    function getBankReferenceCode(): ?string
     {
-        return $this->data->referenceCode;
+        return $this->data->bankReferenceCode;
     }
     //Payment bank account. Not required if payment method is cash. ,
     function getBankAccount(): ?BankAccountInterface

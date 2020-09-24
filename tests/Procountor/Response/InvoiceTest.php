@@ -57,7 +57,7 @@ class InvoiceTest extends ResponseTestBase
           "paymentInfo": {
             "paymentMethod": "BANK_TRANSFER",
             "currency": "EUR",
-            "referenceCode": "26013",
+            "bankReferenceCode": "26013",
             "bankAccount": {
               "accountNumber": "string",
               "bic": "string"
