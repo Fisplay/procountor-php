@@ -6,6 +6,11 @@
     "autoload": {
         "psr-4": {"Procountor\\": "src/Procountor"}
     },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    },
     "require": {
         "php": "^7.2",
         "guzzlehttp/guzzle": "^7.0.1"
