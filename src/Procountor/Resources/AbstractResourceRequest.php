@@ -42,7 +42,6 @@ class AbstractResourceRequest {
         return $this->createResponse($response);
     }
 
-
     public function put(int $id, AbstractResourceInterface $item): AbstractResponse
     {
         if (!(get_class($item)!=$this->interfaceIn)) {

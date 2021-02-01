@@ -38,7 +38,7 @@ This is how to connect to invoices's API endpoint:
 <a name="search"></a>
 ## Search invoices
 
-    $invoicesApi = $invoices->get();
+    $invoices = $invoicesApi->get();
 
 <a name="getinvoice"></a>
 ## Get an invoice

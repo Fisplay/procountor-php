@@ -6,7 +6,7 @@ use Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Interfaces\LoggerInterface;
 use Procountor\Json\Builder;
 
-class Client 
+class Client
 {
     private $accessToken;
     private $mode = 'prod';
@@ -57,6 +57,26 @@ class Client
         $this->accessToken = $this->getAccessTokenByAuthorizationCode($code);
         return $this;
     }
+
+    public function authenticateByApiKey(
+        string $clientId,
+        string $clientSecret,
+        string $redirectUri,
+        string $apiKey,
+        int $company
+    ): self {
+        $this->loginParameters = [
+            'clientId' => $clientId,
+            'clientSecret' => $clientSecret,
+            'redirectUri' => $redirectUri,
+            'apiKey' => $apiKey,
+            'company' => $company,
+        ];
+
+        $this->accessToken = $this->getAccessTokenByApiKey($apiKey);
+        return $this;
+    }
+
 
     private function getRequestAuthHeaders()
     {
@@ -157,6 +177,33 @@ class Client
     private function getResourceUrl(string $resourceName, $id = null): string
     {
         return sprintf('%s/%s', $this->getBaseUri(), $resourceName);
+    }
+
+    private function getAccessTokenByApiKey(string $code): string
+    {
+
+        $post = [
+            'api_key' => $code,
+            'client_id' => $this->loginParameters['clientId'],
+            'client_secret' => $this->loginParameters['clientSecret'],
+            'redirect_uri' => $this->loginParameters['redirectUri'],
+        ];
+        $url = sprintf(
+                '%s?grant_type=client_credentials&',
+                $this->getUrlAccessToken()
+        ).http_build_query($post);
+
+        $headers = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
+
+        $request = $this->request($url, 'POST', json_encode($headers), json_encode($post));
+        $result = json_decode($request->getBody());
+
+        if (!empty($result->error)) {
+            $this->error($result);
+        }
+        return $result->access_token;
     }
 
     private function getAccessTokenByAuthorizationCode(string $code): string
