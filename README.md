@@ -9,7 +9,7 @@
 
 <a name="introduction"></a>
 ## Introduction
-This opensource project is about ...
+This opensource project is about procountor API
 
 <a name="introduction"></a>
 ## Start
@@ -19,12 +19,11 @@ This opensource project is about ...
     $yourLogger = new class() implements LoggerInterface {....}
     $client = new Client($yourLogger);
 
-    $client->login(
+    $client->authenticateByApiKey(
         $clientId,
         $clientSecret,
         $redirectUri,
-        $username,
-        $password,
+        $apiKey,
         $company
     );
 
@@ -52,7 +51,7 @@ To get an invoice with ID = 1212:
 
 To post a new invoice, you need first to implement your own adapter:
 
-    $newInvoice = new class($yourdata) extends \Procountor\Interfaces\Write\Invoice {
+    $newInvoice = new class($yourdata) implements \Procountor\Interfaces\Write\Invoice {
         private $data;
 
         public function __construct($yourdata) {
@@ -70,3 +69,7 @@ To post a new invoice, you need first to implement your own adapter:
 Finally you can properly post the invoice:
 
     $invoice = $invoicesApi->post($newInvoice)
+
+# Developing
+
+Documents about developing this project can be found under `/doc` directory
