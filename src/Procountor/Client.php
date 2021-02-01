@@ -36,6 +36,11 @@ class Client
         $this->logger = $logger;
     }
 
+    /**
+     * @deprecated
+     *
+     * Use authenticateByApiKey
+     */
     public function login(
         string $clientId,
         string $clientSecret,
