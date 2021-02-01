@@ -18,12 +18,12 @@ class Client
 
     private static $urls = [
         'prod' => [
-            'urlBase' => 'https://api.procountor.com/v2008/api',
+            'urlBase' => 'https://api.procountor.com/v2011/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
         'dev' => [
-            'urlBase' => 'https://api-test.procountor.com/v2008/api',
+            'urlBase' => 'https://api-test.procountor.com/v2011/api',
             'urlAuthorize' => '/oauth/authz',
             'urlAccessToken' => '/oauth/token',
         ],
