@@ -9,5 +9,4 @@ abstract class AbstractResponse {
     public function __construct(stdClass $data) {
         $this->data = $data;
     }
-
 }

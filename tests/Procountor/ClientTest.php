@@ -2,10 +2,10 @@
 
 namespace Procountor;
 
-use PHPUnit\Framework\TestCase;
 use Procountor\Interfaces\LoggerInterface;
+use Tests\ApiTestCase;
 
-class ClientTest extends TestCase
+class ClientTest extends ApiTestCase
 {
     public function testRequestCallsLogger()
     {
@@ -76,5 +76,19 @@ class ClientTest extends TestCase
         };
         $client = new Client($logger);
         $this->markTestIncomplete();
+    }
+
+    /**
+     * Test that authentication works
+     */
+    public function testAuthenticateByApiKey()
+    {
+        $refClass = new \ReflectionClass(Client::class);
+        $refProp = $refClass->getProperty('accessToken');
+        $refProp->setAccessible(true);
+
+        $client = $this->createClient();
+
+        $this->assertNotNull($refProp->getValue($client));
     }
 }
