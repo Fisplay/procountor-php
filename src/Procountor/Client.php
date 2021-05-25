@@ -15,19 +15,7 @@ class Client
     private $guzzleClient;
     private $debug = false;
     private $logger = null;
-
-    private static $urls = [
-        'prod' => [
-            'urlBase' => 'https://api.procountor.com/v2011/api',
-            'urlAuthorize' => '/oauth/authz',
-            'urlAccessToken' => '/oauth/token',
-        ],
-        'dev' => [
-            'urlBase' => 'https://api-test.procountor.com/v2011/api',
-            'urlAuthorize' => '/oauth/authz',
-            'urlAccessToken' => '/oauth/token',
-        ],
-    ];
+    private $apiVersion = 'latest';
 
     public function __construct(LoggerInterface $logger)
     {
@@ -300,12 +288,12 @@ class Client
 
     private function getUrlAuthorize(): string
     {
-        return $this->getBaseUri().self::$urls[$this->mode]['urlAuthorize'];
+        return $this->getBaseUri().$this->getUrls()[$this->mode]['urlAuthorize'];
     }
 
     private function getUrlAccessToken(): string
     {
-        return $this->getBaseUri().self::$urls[$this->mode]['urlAccessToken'];
+        return $this->getBaseUri().$this->getUrls()[$this->mode]['urlAccessToken'];
     }
 
     private function getState(): string
@@ -315,7 +303,7 @@ class Client
 
     private function getBaseUri(): string
     {
-        return self::$urls[$this->mode]['urlBase'];
+        return $this->getUrls()[$this->mode]['urlBase'];
     }
 
     public function setDebug(bool $debug)
@@ -323,4 +311,25 @@ class Client
         $this->debug = $debug;
     }
 
+    public function setApiVersion(string $apiVersion): self
+    {
+        $this->apiVersion = $apiVersion;
+        return $this;
+    }
+
+    private function getUrls(): array
+    {
+        return [
+            'prod' => [
+                'urlBase' => 'https://api.procountor.com/' . $this->apiVersion . '/api',
+                'urlAuthorize' => '/oauth/authz',
+                'urlAccessToken' => '/oauth/token',
+            ],
+            'dev' => [
+                'urlBase' => 'https://api-test.procountor.com/' . $this->apiVersion . '/api',
+                'urlAuthorize' => '/oauth/authz',
+                'urlAccessToken' => '/oauth/token',
+            ],
+        ];
+    }
 }
