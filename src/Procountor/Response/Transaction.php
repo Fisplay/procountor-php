@@ -18,6 +18,7 @@ class Transaction extends AbstractResponse implements TransactionRead
     {
         return $this->data->transactionType;
     }
+
     //Ledger account number for the transaction. Must be valid for the current Procountor environment. Use GET /coa to obtain the chart of accounts. ,
     public function getAccount(): string
     {
