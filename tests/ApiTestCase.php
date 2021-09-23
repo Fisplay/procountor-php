@@ -3,26 +3,26 @@
 namespace Tests;
 
 use Dotenv\Dotenv;
+use GuzzleHttp\Client as GuzzleHttpClient;
+use PhpExtended\HttpMessage\RequestFactory;
+use PhpExtended\HttpMessage\StreamFactory;
 use PHPUnit\Framework\TestCase;
-use Procountor\Client;
-use Procountor\Interfaces\LoggerInterface;
+use Procountor\Procountor\Client;
+use Psr\Log\NullLogger;
 
 class ApiTestCase extends TestCase
 {
-    public function createClient(LoggerInterface $logger = null)
+    public function createClient()
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/..', '.env.testing');
         $dotenv->load();
 
-        if (!$logger) {
-            /** @var LoggerInterface */
-            $logger = $this
-                ->getMockBuilder(LoggerInterface::class)
-                ->getMock();
-        }
-
-        $client = new Client($logger);
-        $client->setModeDev();
+        $client = new Client(
+            new GuzzleHttpClient(),
+            new RequestFactory(),
+            new StreamFactory(),
+            new NullLogger()
+        );
 
         return $client->authenticateByApiKey(
             $_ENV['PROCOUNTOR_CLIENT_ID'],
