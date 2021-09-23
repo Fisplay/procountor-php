@@ -51,9 +51,9 @@ class Builder
                 case $methodReturnObj instanceof AbstractCollection:
                     $value = $this->handleCollection($methodreturn);
                     break;
-                default;
+                default:
                     $value = $methodreturn;
-                break;
+                    break;
             }
 
             $jsonArray[$this->methodToField($methodname)] = $value;
