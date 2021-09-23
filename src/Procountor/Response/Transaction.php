@@ -1,8 +1,9 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\Read\Transaction as TransactionRead;
-use Procountor\Collection\DimensionItemValueCollection;
+namespace Procountor\Procountor\Response;
+
+use Procountor\Procountor\Interfaces\Read\Transaction as TransactionRead;
+use Procountor\Procountor\Collection\DimensionItemValueCollection;
 
 class Transaction extends AbstractResponse implements TransactionRead
 {

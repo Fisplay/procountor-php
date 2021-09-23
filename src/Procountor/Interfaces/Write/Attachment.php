@@ -1,9 +1,10 @@
 <?php
-namespace Procountor\Interfaces\Write;
 
-use Procountor\Interfaces\AttachmentCommon;
+namespace Procountor\Procountor\Interfaces\Write;
 
-interface Attachment extends AttachmentCommon {
+use Procountor\Procountor\Interfaces\AttachmentCommon;
+
+interface Attachment extends AttachmentCommon
+{
 
 }
-

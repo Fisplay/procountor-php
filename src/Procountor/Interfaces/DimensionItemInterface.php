@@ -1,8 +1,9 @@
 <?php
-namespace Procountor\Interfaces;
 
+namespace Procountor\Procountor\Interfaces;
 
-interface DimensionItemInterface extends AbstractResourceInterface {
+interface DimensionItemInterface extends AbstractResourceInterface
+{
     //Dimension item ID. ,
     public function getId(): int;
 
@@ -14,6 +15,4 @@ interface DimensionItemInterface extends AbstractResourceInterface {
 
     //Dimension item description.
     public function getDescription(): ?string;
-
 }
-

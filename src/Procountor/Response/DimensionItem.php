@@ -1,9 +1,11 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\DimensionItemInterface;
+namespace Procountor\Procountor\Response;
 
-class DimensionItem extends AbstractResponse implements DimensionItemInterface {
+use Procountor\Procountor\Interfaces\DimensionItemInterface;
+
+class DimensionItem extends AbstractResponse implements DimensionItemInterface
+{
     //Dimension item ID. ,
     public function getId(): int
     {
@@ -28,4 +30,3 @@ class DimensionItem extends AbstractResponse implements DimensionItemInterface {
         return $this->data->description ?? null;
     }
 }
-

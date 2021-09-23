@@ -1,9 +1,11 @@
 <?php
-namespace Procountor\Interfaces;
+
+namespace Procountor\Procountor\Interfaces;
 
 use DateTime;
 
-interface PaymentInfoInterface extends AbstractResourceInterface {
+interface PaymentInfoInterface extends AbstractResourceInterface
+{
     //['BANK_TRANSFER', 'DIRECT_DEBIT', 'DIRECT_PAYMENT', 'CLEARING', 'CREDIT_CARD_CHARGE', 'FOREIGN_PAYMENT', 'OTHER', 'CASH', 'DOMESTIC_PAYMENT_PLUSGIRO', 'DOMESTIC_PAYMENT_BANKGIRO', 'DOMESTIC_PAYMENT_CREDITOR', 'DKLMPKRE', 'NETS'],
     function getPaymentMethod(): string;
 

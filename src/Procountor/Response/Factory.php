@@ -1,14 +1,15 @@
 <?php
-namespace Procountor\Response;
 
+namespace Procountor\Procountor\Response;
 
-class Factory {
+class Factory
+{
 
-    public function __construct($resource, $response) {
-
+    public function __construct($resource, $response)
+    {
     }
 
-    public function getResponse() {
-
+    public function getResponse()
+    {
     }
 }

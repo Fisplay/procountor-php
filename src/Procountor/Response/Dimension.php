@@ -1,10 +1,12 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\DimensionInterface;
-use Procountor\Collection\DimensionItemCollection;
+namespace Procountor\Procountor\Response;
 
-class Dimension extends AbstractResponse implements DimensionInterface {
+use Procountor\Procountor\Interfaces\DimensionInterface;
+use Procountor\Procountor\Collection\DimensionItemCollection;
+
+class Dimension extends AbstractResponse implements DimensionInterface
+{
 
     //Dimension ID. ,
     public function getId(): int
@@ -26,7 +28,7 @@ class Dimension extends AbstractResponse implements DimensionInterface {
         }
 
         $collection = new DimensionItemCollection();
-        foreach($this->data->items AS $item) {
+        foreach ($this->data->items as $item) {
             $dimensionItem = new DimensionItem($item);
             $collection->addItem($dimensionItem);
         }
@@ -34,4 +36,3 @@ class Dimension extends AbstractResponse implements DimensionInterface {
         return $collection;
     }
 }
-

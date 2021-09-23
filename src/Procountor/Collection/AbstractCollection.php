@@ -1,8 +1,8 @@
 <?php
-namespace Procountor\Collection;
 
-use Procountor\Interfaces\AbstractResourceInterface;
+namespace Procountor\Procountor\Collection;
 
+use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use ArrayIterator;
 use IteratorAggregate;
 use Countable;
@@ -24,12 +24,13 @@ abstract class AbstractCollection implements IteratorAggregate, Countable
         return $this;
     }
 
-    public function getIterator() {
+    public function getIterator()
+    {
         return new ArrayIterator($this->items);
     }
 
-    public function count() {
+    public function count()
+    {
         return $this->getIterator()->count();
     }
-
 }

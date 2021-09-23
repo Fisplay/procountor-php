@@ -1,15 +1,15 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\CounterPartyInterface;
-use Procountor\Interfaces\AddressInterface;
-use Procountor\Interfaces\BankAccountInterface;
-use Procountor\Interfaces\EInvoiceAddressInterface;
+namespace Procountor\Procountor\Response;
 
+use Procountor\Procountor\Interfaces\CounterPartyInterface;
+use Procountor\Procountor\Interfaces\AddressInterface;
+use Procountor\Procountor\Interfaces\BankAccountInterface;
+use Procountor\Procountor\Interfaces\EInvoiceAddressInterface;
 use stdClass;
 
-
-class CounterParty extends AbstractResponse implements CounterPartyInterface {
+class CounterParty extends AbstractResponse implements CounterPartyInterface
+{
 
     //Name of the contact person. Max length 28. ,
     public function getContactPersonName(): ?string
@@ -58,5 +58,4 @@ class CounterParty extends AbstractResponse implements CounterPartyInterface {
     {
         return new EInvoiceAddress($this->data->einvoiceAddress);
     }
-
 }

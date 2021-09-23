@@ -1,13 +1,14 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\BankAccountInterface;
-use Procountor\Interfaces\BusinessPartnerPaymentInfoInterface;
+namespace Procountor\Procountor\Response;
 
+use Procountor\Procountor\Interfaces\BankAccountInterface;
+use Procountor\Procountor\Interfaces\BusinessPartnerPaymentInfoInterface;
 use DateTime;
 use stdClass;
 
-class BusinessPartnerPaymentInfo extends AbstractResponse implements BusinessPartnerPaymentInfoInterface {
+class BusinessPartnerPaymentInfo extends AbstractResponse implements BusinessPartnerPaymentInfoInterface
+{
     //['BANK_TRANSFER', 'DIRECT_DEBIT', 'DIRECT_PAYMENT', 'CLEARING', 'CREDIT_CARD_CHARGE', 'FOREIGN_PAYMENT', 'OTHER', 'CASH', 'DOMESTIC_PAYMENT_PLUSGIRO', 'DOMESTIC_PAYMENT_BANKGIRO', 'DOMESTIC_PAYMENT_CREDITOR', 'DKLMPKRE', 'NETS'],
     function getPaymentMethod(): string
     {

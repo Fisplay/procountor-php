@@ -1,6 +1,9 @@
 <?php
-namespace Procountor;
+
+namespace Procountor\Procountor;
 
 use Exception;
 
-class ClientException extends Exception {}
+class ClientException extends Exception
+{
+}

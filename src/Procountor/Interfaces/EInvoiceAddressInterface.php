@@ -1,7 +1,9 @@
 <?php
-namespace Procountor\Interfaces;
 
-interface EInvoiceAddressInterface extends AbstractResourceInterface {
+namespace Procountor\Procountor\Interfaces;
+
+interface EInvoiceAddressInterface extends AbstractResourceInterface
+{
     //SALES_INVOICE Only. Operator code. Required if the invoiceChannel is ELECTRONIC_INVOICE and country is FINLAND. ,
     public function getOperator(): ?string;
 

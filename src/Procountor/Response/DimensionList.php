@@ -1,7 +1,9 @@
 <?php
-namespace Procountor\Response;
 
-class DimensionList extends AbstractResponse {
+namespace Procountor\Procountor\Response;
+
+class DimensionList extends AbstractResponse
+{
 
     public function getItems(): array
     {

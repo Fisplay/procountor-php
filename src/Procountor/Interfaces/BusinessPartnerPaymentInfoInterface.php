@@ -1,9 +1,11 @@
 <?php
-namespace Procountor\Interfaces;
+
+namespace Procountor\Procountor\Interfaces;
 
 use DateTime;
 
-interface BusinessPartnerPaymentInfoInterface extends AbstractResourceInterface {
+interface BusinessPartnerPaymentInfoInterface extends AbstractResourceInterface
+{
     //Payment term days.
     function getPaymentTermDays(): ?string;
 

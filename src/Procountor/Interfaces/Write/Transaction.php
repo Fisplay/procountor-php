@@ -1,9 +1,10 @@
 <?php
-namespace Procountor\Interfaces\Write;
 
-use Procountor\Interfaces\TransactionCommon;
-use Procountor\Collection\AttachmentCollection;
+namespace Procountor\Procountor\Interfaces\Write;
 
+use Procountor\Procountor\Interfaces\TransactionCommon;
+use Procountor\Procountor\Collection\AttachmentCollection;
 
-interface Transaction extends TransactionCommon {
+interface Transaction extends TransactionCommon
+{
 }

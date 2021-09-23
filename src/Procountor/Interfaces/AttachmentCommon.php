@@ -1,7 +1,9 @@
 <?php
-namespace Procountor\Interfaces;
 
-interface AttachmentCommon extends AbstractResourceInterface {
+namespace Procountor\Procountor\Interfaces;
+
+interface AttachmentCommon extends AbstractResourceInterface
+{
 
     //Attachment name. Include a correct file extension to the value. ,
     public function getName(): string;
@@ -11,5 +13,4 @@ interface AttachmentCommon extends AbstractResourceInterface {
 
     //Unique identifier of the referenced object. Exception: for JOURNAL type ledger receipts, use the value of invoiceId referring to the associated invoice. ,
     public function getReferenceId(): ?string;
-
 }

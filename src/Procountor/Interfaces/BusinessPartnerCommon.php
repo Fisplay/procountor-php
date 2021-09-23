@@ -1,9 +1,11 @@
 <?php
-namespace Procountor\Interfaces;
+
+namespace Procountor\Procountor\Interfaces;
 
 use DateTime;
 
-interface BusinessPartnerCommon extends AbstractResourceInterface {
+interface BusinessPartnerCommon extends AbstractResourceInterface
+{
     //Business partner type. Note that this affects validation requirements. = [ CUSTOMER, SUPPLIER, PERSON ],
     public function getType(): string;
 

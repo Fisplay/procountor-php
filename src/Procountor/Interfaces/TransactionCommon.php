@@ -1,10 +1,12 @@
 <?php
-namespace Procountor\Interfaces;
 
-use Procountor\Collection\AllocationCollection;
-use Procountor\Collection\DimensionItemValueCollection;
+namespace Procountor\Procountor\Interfaces;
 
-interface TransactionCommon extends AbstractResourceInterface {
+use Procountor\Procountor\Collection\AllocationCollection;
+use Procountor\Procountor\Collection\DimensionItemValueCollection;
+
+interface TransactionCommon extends AbstractResourceInterface
+{
 
     //Transaction type. Depends on the transaction and the ledger account in question. Type REVERSING_ENTRY is used to indicate the first row of a ledger receipt for a specific logic on the UI. Typically, it represents a transaction for a balance sheet account. Note that ledger receipts with no transactions marked as reversing entries are possible. Type ENTRY is the general type for transactions. It can be used even on the first rows of ledger receipts. Type RECONCILIATION_ENTRY is used for getting the sum of transactions on a receipt to reconcile (to equal zero). Generally, all ledger receipts should reconcile. Procountor does not automatically create reconciliation entries for ledger receipts created or updated through the API. If VAT is used, a reconciliation row might be necessary due to remainders and rounding. For both REVERSING_ENTRY and RECONCILIATION_ENTRY transactions, vatStatus cannot be defined and vatPercent must be 0. Additionally, transactions of those types cannot be removed from a ledger receipt once created. = ['RECONCILIATION_ENTRY', 'REVERSING_ENTRY', 'ENTRY'],
     public function getTransactionType(): string;
@@ -41,6 +43,4 @@ interface TransactionCommon extends AbstractResourceInterface {
 
     //VAT deduction percentage for the transaction.
     public function getVatDeductionPercent(): ?float;
-
-
 }

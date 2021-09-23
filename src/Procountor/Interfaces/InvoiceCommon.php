@@ -1,12 +1,13 @@
 <?php
-namespace Procountor\Interfaces;
 
-use Procountor\Collection\InvoiceRowCollection;
-use Procountor\Collection\TravelInformationItemsCollection;
+namespace Procountor\Procountor\Interfaces;
 
+use Procountor\Procountor\Collection\InvoiceRowCollection;
+use Procountor\Procountor\Collection\TravelInformationItemsCollection;
 use DateTime;
 
-interface InvoiceCommon extends AbstractResourceInterface {
+interface InvoiceCommon extends AbstractResourceInterface
+{
 
     //Business partner ID. Used to link the invoice to a customer or supplier in the business partner register. If supplied, the company must have this partner ID in the corresponding register. ,
     public function getPartnerId(): ?int;

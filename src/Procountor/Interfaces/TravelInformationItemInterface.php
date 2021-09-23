@@ -1,9 +1,11 @@
 <?php
-namespace Procountor\Interfaces;
+
+namespace Procountor\Procountor\Interfaces;
 
 use DateTime;
 
-interface TravelInformationItemInterface extends AbstractResourceInterface {
+interface TravelInformationItemInterface extends AbstractResourceInterface
+{
     //Travel departure date. ,
     public function getDeparture(): ?DateTime;
 

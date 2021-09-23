@@ -1,5 +1,7 @@
 <?php
-namespace Procountor\Interfaces;
 
-interface AbstractResourceInterface {
+namespace Procountor\Procountor\Interfaces;
+
+interface AbstractResourceInterface
+{
 }

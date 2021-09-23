@@ -1,13 +1,14 @@
 <?php
-namespace Procountor\Collection;
 
-use Procountor\Interfaces\InvoiceRowInterface;
+namespace Procountor\Procountor\Collection;
 
-class InvoiceRowCollection extends AbstractCollection {
+use Procountor\Procountor\Interfaces\InvoiceRowInterface;
+
+class InvoiceRowCollection extends AbstractCollection
+{
     public function addItem(InvoiceRowInterface $item): AbstractCollection
     {
         $this->addItemToCollection($item);
         return $this;
     }
-
 }

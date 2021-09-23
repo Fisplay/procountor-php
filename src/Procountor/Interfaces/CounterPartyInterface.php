@@ -1,8 +1,9 @@
 <?php
-namespace Procountor\Interfaces;
 
+namespace Procountor\Procountor\Interfaces;
 
-interface CounterPartyInterface extends AbstractResourceInterface {
+interface CounterPartyInterface extends AbstractResourceInterface
+{
     //Name of the contact person. Max length 28. ,
     public function getContactPersonName(): ?string;
 

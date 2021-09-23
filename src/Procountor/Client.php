@@ -1,10 +1,11 @@
 <?php
-namespace Procountor;
+
+namespace Procountor\Procountor;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Procountor\Interfaces\AbstractResourceInterface;
-use Procountor\Interfaces\LoggerInterface;
-use Procountor\Json\Builder;
+use Procountor\Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Procountor\Interfaces\LoggerInterface;
+use Procountor\Procountor\Json\Builder;
 
 class Client
 {
@@ -20,7 +21,7 @@ class Client
     public function __construct(LoggerInterface $logger)
     {
         $this->guzzleClient = new GuzzleClient(['base_uri' => $this->getBaseUri()]);
-        $this->state = rand().strtotime('now');
+        $this->state = rand() . strtotime('now');
         $this->logger = $logger;
     }
 
@@ -75,7 +76,7 @@ class Client
     {
         $headers = [
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->accessToken
+            'Authorization' => 'Bearer ' . $this->accessToken
         ];
 
         return $headers;
@@ -106,7 +107,7 @@ class Client
             ],
         ];
 
-        if ($params['headers']['Content-Type']=='application/json') {
+        if ($params['headers']['Content-Type'] === 'application/json') {
             $params['json'] = json_decode($data, true);
         } else {
             $params['form_params'] = json_decode($data, true);
@@ -152,7 +153,7 @@ class Client
             $this->error($response);
         }
 
-        if(!empty($response->constraintViolations)) {
+        if (!empty($response->constraintViolations)) {
             $error = new \stdClass();
             $error->errors = [['message' =>  $response->constraintViolations[0]->errorCode]];
             $this->error($error);
@@ -182,9 +183,9 @@ class Client
             'redirect_uri' => $this->loginParameters['redirectUri'],
         ];
         $url = sprintf(
-                '%s?grant_type=client_credentials&',
-                $this->getUrlAccessToken()
-        ).http_build_query($post);
+            '%s?grant_type=client_credentials&',
+            $this->getUrlAccessToken()
+        ) . http_build_query($post);
 
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -209,9 +210,9 @@ class Client
             'redirect_uri' => $this->loginParameters['redirectUri'],
         ];
         $url = sprintf(
-                '%s?grant_type=authorization_code&',
-                $this->getUrlAccessToken()
-        ).http_build_query($post);
+            '%s?grant_type=authorization_code&',
+            $this->getUrlAccessToken()
+        ) . http_build_query($post);
 
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -234,11 +235,11 @@ class Client
     private function getAuthorizationCode(): string
     {
         $url =  sprintf(
-                '%s?response_type=code&client_id=%s&state=%s',
-                $this->getUrlAuthorize(),
-                $this->loginParameters['clientId'],
-                $this->getState()
-            );
+            '%s?response_type=code&client_id=%s&state=%s',
+            $this->getUrlAuthorize(),
+            $this->loginParameters['clientId'],
+            $this->getState()
+        );
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];
@@ -288,12 +289,12 @@ class Client
 
     private function getUrlAuthorize(): string
     {
-        return $this->getBaseUri().$this->getUrls()[$this->mode]['urlAuthorize'];
+        return $this->getBaseUri() . $this->getUrls()[$this->mode]['urlAuthorize'];
     }
 
     private function getUrlAccessToken(): string
     {
-        return $this->getBaseUri().$this->getUrls()[$this->mode]['urlAccessToken'];
+        return $this->getBaseUri() . $this->getUrls()[$this->mode]['urlAccessToken'];
     }
 
     private function getState(): string

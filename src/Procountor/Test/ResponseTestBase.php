@@ -1,7 +1,8 @@
 <?php
-namespace Procountor\Test;
 
-use Procountor\Collection\AbstractCollection;
+namespace Procountor\Procountor\Test;
+
+use Procountor\Procountor\Collection\AbstractCollection;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use DateTime;
@@ -12,7 +13,7 @@ abstract class ResponseTestBase extends TestCase
     {
         $reflection = new ReflectionClass($object);
         foreach ($reflection->getMethods() as $method) {
-            if ($method->name=='__construct' || !preg_match('/get(.*)/', $method->name, $matches)) {
+            if ($method->name == '__construct' || !preg_match('/get(.*)/', $method->name, $matches)) {
                 continue;
             }
 
@@ -20,23 +21,23 @@ abstract class ResponseTestBase extends TestCase
             $field = lcfirst($matches[1]);
             $excepted = $data->{$field};
 
-            switch(gettype($ret)) {
+            switch (gettype($ret)) {
                 case 'object':
-                    switch(true) {
+                    switch (true) {
                         case $ret instanceof AbstractCollection:
-                            foreach($ret AS  $k => $item) {
+                            foreach ($ret as $k => $item) {
                                 $this->assertProcountorResponseObject($excepted[$k], $item);
                             }
-                        break;
+                            break;
                         case $ret instanceof DateTime:
                             $this->assertEquals(new DateTime($excepted), $ret);
-                        break;
+                            break;
                         default:
                             $this->assertProcountorResponseObject($excepted, $ret);
-                        break;
+                            break;
                     }
 
-                break;
+                    break;
                 default:
                     $this->assertEquals(
                         $excepted,
@@ -47,7 +48,7 @@ abstract class ResponseTestBase extends TestCase
                             get_class($object)
                         )
                     );
-                break;
+                    break;
             }
         }
     }

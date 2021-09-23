@@ -1,13 +1,14 @@
 <?php
-namespace Procountor\Collection;
 
-use Procountor\Interfaces\TransactionCommon;
+namespace Procountor\Procountor\Collection;
 
-class TransactionCollection extends AbstractCollection {
+use Procountor\Procountor\Interfaces\TransactionCommon;
+
+class TransactionCollection extends AbstractCollection
+{
     public function addItem(TransactionCommon $item): AbstractCollection
     {
         $this->addItemToCollection($item);
         return $this;
     }
-
 }

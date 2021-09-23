@@ -1,7 +1,8 @@
 <?php
-namespace Procountor\Interfaces\Read;
 
-use Procountor\Interfaces\TransactionCommon;
+namespace Procountor\Procountor\Interfaces\Read;
+
+use Procountor\Procountor\Interfaces\TransactionCommon;
 
 interface Transaction extends TransactionCommon
 {

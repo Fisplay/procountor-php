@@ -1,7 +1,9 @@
 <?php
-namespace Procountor\Interfaces\Write;
 
-use Procountor\Interfaces\BusinessPartnerCommon;
+namespace Procountor\Procountor\Interfaces\Write;
 
-interface BusinessPartner extends BusinessPartnerCommon {
+use Procountor\Procountor\Interfaces\BusinessPartnerCommon;
+
+interface BusinessPartner extends BusinessPartnerCommon
+{
 }

@@ -1,11 +1,12 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\TravelInformationItemInterface;
+namespace Procountor\Procountor\Response;
 
+use Procountor\Procountor\Interfaces\TravelInformationItemInterface;
 use DateTime;
 
-class TravelInformationItem extends AbstractResponse implements TravelInformationItemInterface {
+class TravelInformationItem extends AbstractResponse implements TravelInformationItemInterface
+{
 
     //Travel departure date. ,
     public function getDeparture(): ?DateTime
@@ -30,6 +31,4 @@ class TravelInformationItem extends AbstractResponse implements TravelInformatio
     {
         return $this->data->purpose;
     }
-
 }
-

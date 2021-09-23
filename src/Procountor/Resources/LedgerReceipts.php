@@ -1,16 +1,14 @@
 <?php
-namespace Procountor\Resources;
 
-use Procountor\Client;
-use Procountor\Interfaces\Read\LedgerReceipt as LedgerReceiptIn;
-use Procountor\Response\LedgerReceipt as LedgerReceiptOut;
+namespace Procountor\Procountor\Resources;
 
-class LedgerReceipts extends AbstractResourceRequest {
+use Procountor\Procountor\Client;
+use Procountor\Procountor\Interfaces\Read\LedgerReceipt as LedgerReceiptIn;
+use Procountor\Procountor\Response\LedgerReceipt as LedgerReceiptOut;
+
+class LedgerReceipts extends AbstractResourceRequest
+{
     protected $apiPath = 'ledgerreceipts';
     protected $interfaceIn = LedgerReceiptIn::class;
     protected $interfaceOut = LedgerReceiptOut::class;
-
-
-
 }
-

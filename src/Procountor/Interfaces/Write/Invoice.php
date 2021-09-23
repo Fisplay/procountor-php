@@ -1,9 +1,10 @@
 <?php
-namespace Procountor\Interfaces\Write;
 
-use Procountor\Interfaces\InvoiceCommon;
+namespace Procountor\Procountor\Interfaces\Write;
 
-interface Invoice extends InvoiceCommon {
+use Procountor\Procountor\Interfaces\InvoiceCommon;
+
+interface Invoice extends InvoiceCommon
+{
 
 }
-

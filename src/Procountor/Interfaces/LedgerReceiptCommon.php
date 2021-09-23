@@ -1,8 +1,9 @@
 <?php
-namespace Procountor\Interfaces;
+
+namespace Procountor\Procountor\Interfaces;
 
 use DateTime;
-use Procountor\Collection\TransactionCollection;
+use Procountor\Procountor\Collection\TransactionCollection;
 
 interface LedgerReceiptCommon extends AbstractResourceInterface
 {

@@ -1,13 +1,14 @@
 <?php
-namespace Procountor\Collection;
 
-use Procountor\Interfaces\DimensionItemValueInterface;
+namespace Procountor\Procountor\Collection;
 
-class DimensionItemValueCollection extends AbstractCollection {
+use Procountor\Procountor\Interfaces\DimensionItemValueInterface;
+
+class DimensionItemValueCollection extends AbstractCollection
+{
     public function addItem(DimensionItemValueInterface $item): AbstractCollection
     {
         $this->addItemToCollection($item, true);
         return $this;
     }
-
 }

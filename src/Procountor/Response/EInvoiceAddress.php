@@ -1,14 +1,14 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\BankAccountInterface;
-use Procountor\Interfaces\EInvoiceAddressInterface;
+namespace Procountor\Procountor\Response;
 
+use Procountor\Procountor\Interfaces\BankAccountInterface;
+use Procountor\Procountor\Interfaces\EInvoiceAddressInterface;
 use DateTime;
 use stdClass;
 
-
-class EInvoiceAddress extends AbstractResponse implements EInvoiceAddressInterface {
+class EInvoiceAddress extends AbstractResponse implements EInvoiceAddressInterface
+{
 
     //SALES_INVOICE Only. Operator code. Required if the invoiceChannel is ELECTRONIC_INVOICE and country is FINLAND. ,
     public function getOperator(): ?string

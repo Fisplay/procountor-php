@@ -1,12 +1,12 @@
 <?php
-namespace Procountor\Response;
 
-use Procountor\Interfaces\AddressInterface;
+namespace Procountor\Procountor\Response;
 
+use Procountor\Procountor\Interfaces\AddressInterface;
 use stdClass;
 
-
-class Address extends AbstractResponse implements AddressInterface {
+class Address extends AbstractResponse implements AddressInterface
+{
 
     // Name ("first line") in the address. Max length 80. ,
     public function getName(): string

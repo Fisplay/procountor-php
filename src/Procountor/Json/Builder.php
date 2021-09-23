@@ -1,19 +1,19 @@
 <?php
-namespace Procountor\Json;
+
+namespace Procountor\Procountor\Json;
 
 use DateTime;
-use Procountor\Interfaces\AbstractResourceInterface;
-use Procountor\Collection\AbstractCollection;
-
+use Procountor\Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Procountor\Collection\AbstractCollection;
 use ReflectionClass;
 use ReflectionMethod;
 
-class Builder {
+class Builder
+{
     private $resource;
 
     public function __construct()
     {
-
     }
 
     public function setResource(AbstractResourceInterface $resource)
@@ -27,7 +27,7 @@ class Builder {
         $jsonArray = [];
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if (strpos($method->name, 'get')===false) {
+            if (strpos($method->name, 'get') === false) {
                 continue;
             }
 
@@ -35,35 +35,35 @@ class Builder {
             $methodreturn = $this->resource->$methodname();
 
             //We dont want nulls to json
-            if( $methodreturn===null) {
+            if ($methodreturn === null) {
                 continue;
             }
 
             $methodReturnObj = (object)$methodreturn;
 
-            switch(true) {
+            switch (true) {
                 case $methodReturnObj instanceof DateTime:
                     $value = $this->handleDateTime($methodreturn);
-                break;
+                    break;
                 case $methodReturnObj instanceof AbstractResourceInterface:
                     $value = $this->handleResource($methodreturn);
-                break;
+                    break;
                 case $methodReturnObj instanceof AbstractCollection:
                     $value = $this->handleCollection($methodreturn);
-                break;
+                    break;
                 default;
                     $value = $methodreturn;
                 break;
             }
 
             $jsonArray[$this->methodToField($methodname)] = $value;
-
         }
 
         return $jsonArray;
     }
 
-    public function getJson() {
+    public function getJson()
+    {
         return json_encode($this->getArray());
     }
 
@@ -72,18 +72,20 @@ class Builder {
         return lcfirst(str_replace('get', '', $methodname));
     }
 
-    private function handleResource(AbstractResourceInterface $object) {
+    private function handleResource(AbstractResourceInterface $object)
+    {
         $builder = new self();
         $builder->setResource($object);
         return $builder->getArray();
     }
 
 
-    private function handleDateTime(DateTime $datetime) {
+    private function handleDateTime(DateTime $datetime)
+    {
         return $datetime->format('Y-m-d');
     }
 
-    private function handleCollection(AbstractCollection $collection): Array
+    private function handleCollection(AbstractCollection $collection): array
     {
         $ret = [];
         foreach ($collection as $object) {
