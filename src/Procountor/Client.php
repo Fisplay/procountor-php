@@ -4,6 +4,7 @@ namespace Procountor\Procountor;
 
 use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Procountor\Json\Builder;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
@@ -23,7 +24,7 @@ class Client
     private StreamFactoryInterface $streamFactory;
     private LoggerInterface $logger;
     private Environment $environment;
-    private string $accessToken;
+    private CacheItemPoolInterface $pool;
 
 
     public function __construct(
@@ -31,32 +32,15 @@ class Client
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory,
         LoggerInterface $logger,
-        Environment $environment
+        Environment $environment,
+        CacheItemPoolInterface $pool
     ) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
         $this->logger = $logger;
         $this->environment = $environment;
-    }
-
-    public function authenticateByApiKey(): self
-    {
-        $request = $this->requestFactory
-            ->createRequest(self::HTTP_POST, $this->environment->accessTokenUri())
-            ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
-            ->withHeader('Accept', 'application/json')
-            // body must be a stream & our content type must be urlencoed
-            ->withBody($this->streamFactory->createStream(http_build_query([
-                'grant_type'    => 'client_credentials',
-                'api_key'       => $this->environment->apiKey,
-                'client_id'     => $this->environment->clientId,
-                'client_secret' => $this->environment->clientSecret,
-                'redirect_uri'  => $this->environment->redirectUri,
-            ])));
-        $result = $this->request($request);
-        $this->accessToken = $result->access_token;
-        return $this;
+        $this->pool = $pool;
     }
 
     public function post(string $resourceName, AbstractResourceInterface $resource)
@@ -105,6 +89,39 @@ class Client
         return $request
             ->withHeader('Content-Type', 'application/json')
             ->withHeader('Accept', 'application/json')
-            ->withHeader('Authorization', sprintf('Bearer %s', $this->accessToken));
+            ->withHeader('Authorization', sprintf('Bearer %s', $this->getAccessToken()));
+    }
+
+    private function getAccessTokenByApiKey(): string
+    {
+        $request = $this->requestFactory
+            ->createRequest(self::HTTP_POST, $this->environment->accessTokenUri())
+            ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
+            ->withHeader('Accept', 'application/json')
+            // body must be a stream & our content type must be urlencoed
+            ->withBody($this->streamFactory->createStream(http_build_query([
+                'grant_type'    => 'client_credentials',
+                'api_key'       => $this->environment->getApiKey(),
+                'client_id'     => $this->environment->getClientId(),
+                'client_secret' => $this->environment->getClientSecret(),
+                'redirect_uri'  => $this->environment->getRedirectUri(),
+            ])));
+        $result = $this->request($request);
+        return $result->access_token;
+    }
+
+    private function getAccessToken(): string
+    {
+        $accessKeyItem = $this->pool->getItem('procountor_access_token');
+        if ($accessKeyItem->isHit()) {
+            $accessKey = $accessKeyItem->get();
+        } else {
+            $accessKey = $this->getAccessTokenByApiKey();
+            $accessKeyItem->set($accessKey);
+            // https://dev.procountor.com/m2m-authentication/#client%20credentials%20grant%20flow_1
+            $accessKeyItem->expiresAfter(60 * 60);
+            $this->pool->save($accessKeyItem);
+        }
+        return $accessKey;
     }
 }
