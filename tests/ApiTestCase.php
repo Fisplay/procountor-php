@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Cache\Adapter\PHPArray\ArrayCachePool;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use PhpExtended\HttpMessage\RequestFactory;
@@ -28,14 +29,13 @@ class ApiTestCase extends TestCase
             new UriFactory()
         );
 
-        $client = new Client(
+        return new Client(
             new GuzzleHttpClient(),
             new RequestFactory(),
             new StreamFactory(),
             new NullLogger(),
-            $prcountorEnv
+            $prcountorEnv,
+            new ArrayCachePool()
         );
-
-        return $client->authenticateByApiKey();
     }
 }
