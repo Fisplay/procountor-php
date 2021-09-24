@@ -104,7 +104,7 @@ class Client
             ->withHeader('Authorization', sprintf('Bearer %s', $this->getAccessToken()));
     }
 
-    private function getAccessTokenByApiKey(): string
+    private function getAccessTokenByApiKey(): array
     {
         $request = $this->requestFactory
             ->createRequest(self::HTTP_POST, $this->environment->accessTokenUri())
@@ -119,7 +119,7 @@ class Client
                 'redirect_uri'  => $this->environment->getRedirectUri(),
             ])));
         $result = $this->request($request);
-        return $result->access_token;
+        return [$result->access_token, $result->expires_in];
     }
 
     private function getAccessToken(): string
@@ -128,10 +128,10 @@ class Client
         if ($accessKeyItem->isHit()) {
             $accessKey = $accessKeyItem->get();
         } else {
-            $accessKey = $this->getAccessTokenByApiKey();
+            [$accessKey, $expires] = $this->getAccessTokenByApiKey();
             $accessKeyItem->set($accessKey);
             // https://dev.procountor.com/m2m-authentication/#client%20credentials%20grant%20flow_1
-            $accessKeyItem->expiresAfter(60 * 60);
+            $accessKeyItem->expiresAfter($expires);
             $this->pool->save($accessKeyItem);
         }
         return $accessKey;
