@@ -1,17 +1,19 @@
 <?php
-namespace Procountor\Json;
+
+namespace Procountor\Procountor\Json;
 
 use PHPUnit\Framework\TestCase;
-use Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use DateTime;
+use Procountor\Procountor\Collection\AbstractCollection;
 
-use Procountor\Collection\AbstractCollection;
+class BuilderTest extends TestCase
+{
 
-class BuilderTest extends TestCase {
-
-    public function testBuild() {
+    public function testBuild()
+    {
         $builder = new Builder();
-        $builder->setResource(new class() implements AbstractResourceInterface {
+        $builder->setResource(new class () implements AbstractResourceInterface {
             public function getTestDate(): DateTime
             {
                 return new DateTime('2017-07-07 11:22:33');
@@ -24,13 +26,12 @@ class BuilderTest extends TestCase {
 
             public function getTestAnotherResource(): AbstractResourceInterface
             {
-                return new class() implements AbstractResourceInterface {
+                return new class () implements AbstractResourceInterface {
                     public function getStringOfChild(): string
                     {
                         return "testStringOfChild";
                     }
                 };
-
             }
 
             public function getTestString(): string
@@ -45,7 +46,7 @@ class BuilderTest extends TestCase {
 
             public function getTestCollection(): AbstractCollection
             {
-                $child = new class() implements AbstractResourceInterface {
+                $child = new class () implements AbstractResourceInterface {
                     public function getStringOfChild(): string
                     {
                         return "testStringOfChild";
@@ -53,7 +54,7 @@ class BuilderTest extends TestCase {
                 };
 
 
-                $collection = new class() extends AbstractCollection
+                $collection = new class () extends AbstractCollection
                 {
                     public function addItem(AbstractResourceInterface $item): AbstractCollection
                     {
@@ -62,13 +63,11 @@ class BuilderTest extends TestCase {
                     }
                 };
 
-                for ($i=1; $i<=2; $i++) {
+                for ($i = 1; $i <= 2; $i++) {
                     $collection->addItem($child);
                 }
                 return $collection;
             }
-
-
         });
 
         $actual = json_decode($builder->getJson(), true);

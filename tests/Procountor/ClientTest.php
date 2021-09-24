@@ -1,37 +1,14 @@
 <?php
 
-namespace Procountor;
+namespace Procountor\Procountor;
 
-use Procountor\Interfaces\LoggerInterface;
 use Tests\ApiTestCase;
 
 class ClientTest extends ApiTestCase
 {
     public function testRequestCallsLogger()
     {
-        $logger = new class () implements LoggerInterface {
-            public $log = [];
-            public function log(
-                string $requestUrl,
-                string $requestType,
-                string $requestHeaders,
-                string $requestBody,
-                string $responseStatusCode,
-                string $responseHeaders,
-                string $responseBody
-            ) {
-                $this->log[] = [
-                    $requestUrl,
-                    $requestType,
-                    $requestHeaders,
-                    $requestBody,
-                    $responseStatusCode,
-                    $responseHeaders,
-                    $responseBody
-                ];
-            }
-        };
-        $client = new Client($logger);
+        $client = $this->createClient();
 
         $client->request('localhost', 'POST', '{"Content-Type": "application/json"}', '{a: b}');
         $requestLog = $logger->log[0];
@@ -52,29 +29,7 @@ class ClientTest extends ApiTestCase
 
     public function testStatuscodeOtherThan200CallsError()
     {
-        $logger = new class () implements LoggerInterface {
-            public $log = [];
-            public function log(
-                string $requestUrl,
-                string $requestType,
-                string $requestHeaders,
-                string $requestBody,
-                string $responseStatusCode,
-                string $responseHeaders,
-                string $responseBody
-            ) {
-                $this->log[] = [
-                    $requestUrl,
-                    $requestType,
-                    $requestHeaders,
-                    $requestBody,
-                    $responseStatusCode,
-                    $responseHeaders,
-                    $responseBody
-                ];
-            }
-        };
-        $client = new Client($logger);
+        $client = $this->createClient();
         $this->markTestIncomplete();
     }
 

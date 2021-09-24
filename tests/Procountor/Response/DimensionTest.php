@@ -1,14 +1,16 @@
 <?php
-namespace Procountor\Response;
 
+namespace Procountor\Procountor\Response;
 
-use Procountor\Response\Dimension;
-use Procountor\Test\ResponseTestBase;
+use Procountor\Procountor\Response\Dimension;
+use Procountor\Procountor\Test\ResponseTestBase;
 
-class DimensionTest extends ResponseTestBase {
+class DimensionTest extends ResponseTestBase
+{
 
-    public function testResponseValid() {
-        $jsonresponse = '{
+    public function testResponseValid()
+    {
+        $jsonresponse = '
           "id": 0,
           "name": "string",
           "items": [
@@ -26,5 +28,4 @@ class DimensionTest extends ResponseTestBase {
 
         $this->assertProcountorResponseObject($exceptedDimension, $actualDimension);
     }
-
 }

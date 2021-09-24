@@ -1,13 +1,15 @@
 <?php
-namespace Procountor\Response;
 
+namespace Procountor\Procountor\Response;
 
-use Procountor\Response\LedgerReceipt;
-use Procountor\Test\ResponseTestBase;
+use Procountor\Procountor\Response\LedgerReceipt;
+use Procountor\Procountor\Test\ResponseTestBase;
 
-class LedgerReceiptTest extends ResponseTestBase {
+class LedgerReceiptTest extends ResponseTestBase
+{
 
-    public function testResponseValid() {
+    public function testResponseValid()
+    {
         $jsonresponse = '{
           "receiptId": null,
           "type": "JOURNAL",
@@ -70,5 +72,4 @@ class LedgerReceiptTest extends ResponseTestBase {
 
         $this->assertProcountorResponseObject($exceptedLedgerReceipt, $actualLedgerReceipt);
     }
-
 }

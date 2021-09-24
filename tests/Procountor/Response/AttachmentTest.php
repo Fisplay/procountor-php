@@ -1,13 +1,15 @@
 <?php
-namespace Procountor\Response;
 
+namespace Procountor\Procountor\Response;
 
-use Procountor\Response\Attachment;
-use Procountor\Test\ResponseTestBase;
+use Procountor\Procountor\Response\Attachment;
+use Procountor\Procountor\Test\ResponseTestBase;
 
-class AttachmentTest extends ResponseTestBase {
+class AttachmentTest extends ResponseTestBase
+{
 
-    public function testResponseValid() {
+    public function testResponseValid()
+    {
         $jsonresponse = '{
           "id": 0,
           "name": "Picture.jpg",
@@ -20,5 +22,4 @@ class AttachmentTest extends ResponseTestBase {
 
         $this->assertProcountorResponseObject($exceptedInvoice, $actualInvoice);
     }
-
 }

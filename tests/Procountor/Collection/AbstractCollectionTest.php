@@ -1,8 +1,9 @@
 <?php
-namespace Procountor\Collection;
+
+namespace Procountor\Procountor\Collection;
 
 use PHPUnit\Framework\TestCase;
-use Procountor\Interfaces\AbstractResourceInterface;
+use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use Exception;
 
 class AbstractCollectionTest extends TestCase
@@ -18,8 +19,8 @@ class AbstractCollectionTest extends TestCase
         $this->assertEquals(1, count($collection));
     }
 
-   public function testAddValidItemToCollection()
-   {
+    public function testAddValidItemToCollection()
+    {
         $collection = $this->getTestColleciton();
 
         $collection->addItemToCollection(
@@ -34,7 +35,7 @@ class AbstractCollectionTest extends TestCase
         $collection = $this->getTestColleciton();
 
 
-        for($i = 1; $i<=5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $collection->addItemToCollection(
                 $this->getTestResource()
             );
@@ -53,7 +54,7 @@ class AbstractCollectionTest extends TestCase
 
     private function getTestResource()
     {
-        return new class() implements AbstractResourceInterface
+        return new class () implements AbstractResourceInterface
         {
             public function getA(): string
             {
@@ -62,8 +63,9 @@ class AbstractCollectionTest extends TestCase
         };
     }
 
-    private function getTestColleciton() {
-        $collection = new class() extends AbstractCollection
+    private function getTestColleciton()
+    {
+        $collection = new class () extends AbstractCollection
         {
 
         };

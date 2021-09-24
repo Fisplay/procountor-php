@@ -1,9 +1,9 @@
 <?php
-namespace Procountor\Response;
 
+namespace Procountor\Procountor\Response;
 
-use Procountor\Response\Invoice;
-use Procountor\Test\ResponseTestBase;
+use Procountor\Procountor\Response\Invoice;
+use Procountor\Procountor\Test\ResponseTestBase;
 
 class InvoiceTest extends ResponseTestBase
 {
