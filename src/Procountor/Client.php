@@ -24,12 +24,12 @@ class Client
     public const RESOURCE_INVOICE = 'invoices';
     public const REOURCE_LEDGER_RECEIPT = 'ledgerreceipts';
 
-    private ClientInterface $httpClient;
-    private RequestFactoryInterface $requestFactory;
-    private StreamFactoryInterface $streamFactory;
-    private LoggerInterface $logger;
-    private Environment $environment;
-    private CacheItemPoolInterface $pool;
+    protected ClientInterface $httpClient;
+    protected RequestFactoryInterface $requestFactory;
+    protected StreamFactoryInterface $streamFactory;
+    protected LoggerInterface $logger;
+    protected Environment $environment;
+    protected CacheItemPoolInterface $pool;
 
 
     public function __construct(
@@ -104,7 +104,7 @@ class Client
             ->withHeader('Authorization', sprintf('Bearer %s', $this->getAccessToken()));
     }
 
-    private function getAccessTokenByApiKey(): array
+    protected function getAccessTokenByApiKey(): array
     {
         $request = $this->requestFactory
             ->createRequest(self::HTTP_POST, $this->environment->accessTokenUri())
@@ -122,7 +122,7 @@ class Client
         return [$result->access_token, $result->expires_in];
     }
 
-    private function getAccessToken(): string
+    protected function getAccessToken(): string
     {
         $accessKeyItem = $this->pool->getItem('procountor_access_token');
         if ($accessKeyItem->isHit()) {
