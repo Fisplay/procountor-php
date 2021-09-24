@@ -47,7 +47,7 @@ class ProcountorServiceProvider extends ServiceProvider implements DeferrablePro
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/procountor.php', 'procountor');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/procountor.php', 'procountor');
         $this->app->singleton(Client::class, fn ($app) => new Client(
             $app->make(ClientInterface::class),
             $app->make(RequestFactoryInterface::class),
