@@ -1,4 +1,23 @@
-# procountor-php [OUT OF DATE, TO BE UPDATED!!]
+# procountor-php
+
+---
+# !! WARNING !!
+
+This README is not up to date. This repository is a fork of https://github.com/Fisplay/procountor-php and not compatible with the original one.
+
+My goals;
+- remove hard dependecies (Guzzle etc, use DI instead)
+- PSR compatible;
+    - PSR-3 logger
+    - PSR-6 cache interfaces
+    - PSR-7 HTTP Message interfaces
+    - PSR-17 HTTP Factories
+    - PSR-18 HTTP Clients
+- Laravel compatible (can be installed as a Laravel package)
+
+
+---
+
 
 - [Introduction](#introduction)
 - [Start](#start)
