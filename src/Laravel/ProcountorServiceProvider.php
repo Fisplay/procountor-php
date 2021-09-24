@@ -2,9 +2,9 @@
 
 namespace Procountor\Laravel;
 
-use App\Console\Commands\Authorize;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Procountor\Laravel\Commands\Authorize as CommandsAuthorize;
 use Procountor\Procountor\Client;
 use Procountor\Procountor\Environment;
 use Psr\Cache\CacheItemPoolInterface;
@@ -37,7 +37,7 @@ class ProcountorServiceProvider extends ServiceProvider implements DeferrablePro
                 __DIR__ . '/../../config/procountor.php' => config_path('procountor.php'),
             ], 'config');
             $this->commands([
-                Authorize::class,
+                CommandsAuthorize::class,
             ]);
         }
     }
