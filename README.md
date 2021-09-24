@@ -1,5 +1,10 @@
 # procountor-php
 
+## Laravel installation
+- require with composer
+- publish configuration with: `php artisan vendor:publish --provider="Procountor\Laravel\ProcountorServiceProvider" --tag="config"`
+
+
 ---
 # !! WARNING !!
 
