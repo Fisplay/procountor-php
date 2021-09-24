@@ -65,6 +65,13 @@ class Client
     {
         $response = $this->httpClient->sendRequest($request);
         $result = $response->getBody()->getContents();
+        $this->logger->info('Procountor request', [
+            'url'     => $request->getUri(),
+            'method'  => $request->getMethod(),
+            'headers' => json_encode($request->getHeaders()),
+            'body'    => $request->getBody()->getContents(),
+            'status'  => $response->getStatusCode(),
+        ]);
         if (
             $request->getHeader('Content-Type') === 'application/json'
             || $request->getHeader('Accept') === 'application/json'
