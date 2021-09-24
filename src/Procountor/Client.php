@@ -13,17 +13,17 @@ use Psr\Log\LoggerInterface;
 class Client
 {
 
-    public const ENV_PRODUCTION = 'production';
-    public const ENV_DEVELOPMENT = 'development';
+    public const HTTP_GET = 'GET';
+    public const HTTP_POST = 'POST';
+    public const HTTP_PUT = 'PUT';
+    public const HTTP_DELETE = 'DELETE';
 
     private ClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
     private StreamFactoryInterface $streamFactory;
     private LoggerInterface $logger;
-    private string $apiVersion;
-    private string $mode;
+    private Environment $environment;
     private string $accessToken;
-    private array $loginParameters;
 
 
     public function __construct(
@@ -31,76 +31,71 @@ class Client
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory,
         LoggerInterface $logger,
-        string $apiVersion = 'latest',
-        string $mode = self::ENV_DEVELOPMENT
+        Environment $environment
     ) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->logger = $logger;
-        $this->apiVersion = $apiVersion;
+        $this->environment = $environment;
     }
 
-    public function authenticateByApiKey(
-        string $clientId,
-        string $clientSecret,
-        string $redirectUri,
-        string $apiKey,
-        int $company
-    ): self {
-        $this->loginParameters = [
-            'clientId'     => $clientId,
-            'clientSecret' => $clientSecret,
-            'redirectUri'  => $redirectUri,
-            'apiKey'       => $apiKey,
-            'company'      => $company,
-        ];
-
-        $this->accessToken = $this->getAccessTokenByApiKey($apiKey);
+    public function authenticateByApiKey(): self
+    {
+        $request = $this->requestFactory
+            ->createRequest(self::HTTP_POST, $this->environment->accessTokenUri())
+            ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
+            ->withHeader('Accept', 'application/json')
+            // body must be a stream & our content type must be urlencoed
+            ->withBody($this->streamFactory->createStream(http_build_query([
+                'grant_type'    => 'client_credentials',
+                'api_key'       => $this->environment->apiKey,
+                'client_id'     => $this->environment->clientId,
+                'client_secret' => $this->environment->clientSecret,
+                'redirect_uri'  => $this->environment->redirectUri,
+            ])));
+        $result = $this->request($request);
+        $this->accessToken = $result->access_token;
         return $this;
     }
 
     public function post(string $resourceName, AbstractResourceInterface $resource)
     {
-        return $this->createRequest('POST', $resourceName, $resource);
+        $request = $this->createRequest(self::HTTP_POST, $resourceName, $resource);
+        return $this->request($request);
     }
 
     public function put(string $resourceName, AbstractResourceInterface $resource)
     {
-        return $this->createRequest('PUT', $resourceName, $resource);
+        $request = $this->createRequest(self::HTTP_PUT, $resourceName, $resource);
+        return $this->request($request);
     }
 
-    public function request(RequestInterface $request, string $headers, string $data)
+    public function get(string $resourceName)
     {
-        $request->withHeader()
-        $params = [
-            'headers' => json_decode($headers, true),
-        ];
+        $request = $this->createRequest(self::HTTP_GET, $resourceName);
+        return $this->request($request);
+    }
 
-        if ($params['headers']['Content-Type'] === 'application/json') {
-            $params['json'] = json_decode($data, true);
-        } else {
-            $params['form_params'] = json_decode($data, true);
+    public function request(RequestInterface $request)
+    {
+        $response = $this->httpClient->sendRequest($request);
+        $result = $response->getBody()->getContents();
+        if (
+            $request->getHeader('Content-Type') === 'application/json'
+            || $request->getHeader('Accept') === 'application/json'
+        ) {
+            return json_decode($result);
         }
-
-        $request = $this->httpClient->sendRequest($type, $url, $params);
-
-        $this->logger->log(
-            $url,
-            $type,
-            $headers,
-            $data,
-            $request->getStatusCode(),
-            json_encode($request->getHeaders()),
-            json_encode($request->getBody())
-        );
-
-
-        return $request;
+        return $result;
     }
 
     public function createRequest(string $method, string $resourceName, ?AbstractResourceInterface $resource = null): RequestInterface
     {
-        $request = $this->requestFactory->createRequest($method, $this->getResourceUrl($resourceName));
+        // Nuke leading slashes, otherwise UriInterface would treat it as an absolute path removing /api-version/api
+        $resourceName = ltrim($resourceName, '/');
+        $url = $this->environment->getBaseUri()->withPath($resourceName);
+        $request = $this->requestFactory->createRequest($method, $url);
         if ($resource) {
             $builder = new Builder();
             $builder->setResource($resource);
@@ -109,65 +104,7 @@ class Client
         }
         return $request
             ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Accept', 'application/json')
             ->withHeader('Authorization', sprintf('Bearer %s', $this->accessToken));
-    }
-
-    public function get(string $resourceName)
-    {
-        //$response = $this->httpClient->request('GET', $this->getResourceUrl($resourceName), $this->getRequestAuthHeaders())->getBody();
-        return $this->createRequest('GET', $resourceName);
-    }
-
-    private function getResourceUrl(string $resourceName): string
-    {
-        return sprintf('%s/%s', $this->getBaseUri(), $resourceName);
-    }
-
-    private function getAccessTokenByApiKey(string $code): string
-    {
-
-        $post = [
-            'api_key' => $code,
-            'client_id' => $this->loginParameters['clientId'],
-            'client_secret' => $this->loginParameters['clientSecret'],
-            'redirect_uri' => $this->loginParameters['redirectUri'],
-        ];
-        $url = sprintf(
-            '%s?grant_type=client_credentials&',
-            $this->getUrlAccessToken()
-        ) . http_build_query($post);
-
-        $headers = [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-        ];
-
-        $request = $this->request($url, 'POST', json_encode($headers), json_encode($post));
-        $result = json_decode($request->getBody());
-
-        if (!empty($result->error)) {
-            $this->error($result);
-        }
-        return $result->access_token;
-    }
-
-    private function error($result)
-    {
-        throw new ClientException($result->errors[0]->message);
-    }
-
-    private function getUrlAccessToken(): string
-    {
-        return $this->getBaseUri() . '/oauth/token';
-    }
-
-    private function getBaseUri(): string
-    {
-        switch ($this->mode) {
-            case self::ENV_PRODUCTION:
-                return 'https://api.procountor.com/' . $this->apiVersion . '/api';
-            case self::ENV_DEVELOPMENT:
-            default:
-                return 'https://api-test.procountor.com/' . $this->apiVersion . '/api';
-        }
     }
 }
