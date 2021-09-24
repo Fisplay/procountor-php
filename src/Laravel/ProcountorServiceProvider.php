@@ -53,15 +53,7 @@ class ProcountorServiceProvider extends ServiceProvider implements DeferrablePro
             $app->make(RequestFactoryInterface::class),
             $app->make(StreamFactoryInterface::class),
             $app->make(LoggerInterface::class),
-            new Environment(
-                config('procountor.client_id'),
-                config('procountor.client_secret'),
-                config('procountor.api_key'),
-                config('procountor.base_uri'),
-                config('procountor.redirect_uri'),
-                $app->make(UriFactoryInterface::class),
-                config('procountor.api_version', 'latest')
-            ),
+            $app->make(Environment::class),
             $app->make(CacheItemPoolInterface::class)
         ));
     }
