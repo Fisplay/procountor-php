@@ -18,6 +18,11 @@ class Client
     public const HTTP_POST = 'POST';
     public const HTTP_PUT = 'PUT';
     public const HTTP_DELETE = 'DELETE';
+    public const RESOURCE_ATTACHMENT = 'attachments';
+    public const RESOURCE_BUSINESS_PARTNER = 'businesspartners';
+    public const RESOURCE_DIMENSION = 'dimensions';
+    public const RESOURCE_INVOICE = 'invoices';
+    public const REOURCE_LEDGER_RECEIPT = 'ledgerreceipts';
 
     private ClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
