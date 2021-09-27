@@ -119,6 +119,15 @@ class Client
                 'redirect_uri'  => $this->environment->getRedirectUri(),
             ])));
         $result = $this->request($request);
+        if ($this->environment->debug()) {
+            $this->logger->debug(
+                'Access token requested',
+                [
+                    'request'  => $request,
+                    'response' => $result,
+                ]
+            );
+        }
         return [$result->access_token, $result->expires_in];
     }
 
