@@ -3,7 +3,6 @@
 namespace Procountor\Procountor\Interfaces;
 
 use Procountor\Procountor\Collection\InvoiceRowCollection;
-use Procountor\Procountor\Collection\TravelInformationItemsCollection;
 use DateTime;
 
 
@@ -333,18 +332,6 @@ interface InvoiceCommon extends AbstractResourceInterface
      * @return null|string
      */
     public function getFactoringText(): ?string;
-
-    /**
-     * Travel information items.
-     * Travel invoice may have one or more travel information items containing:
-     * - departure date
-     * - return date
-     * - destinations
-     * - travel purpose
-     *
-     * @return null|TravelInformationItemsCollection
-     */
-    public function getTravelInformationItems(): ?TravelInformationItemsCollection;
 
     /**
      * VAT status. Use here the numeric parts of VAT status codes listed in "VAT defaults" in Procountor.
