@@ -58,7 +58,7 @@ class AbstractResourceRequest
     {
     }
 
-    private function createResponse($response)
+    protected function createResponse($response)
     {
         $clsOut = $this->interfaceOut;
         switch (gettype($response)) {

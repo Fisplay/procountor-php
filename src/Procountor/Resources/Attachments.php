@@ -2,7 +2,6 @@
 
 namespace Procountor\Procountor\Resources;
 
-use Procountor\Procountor\Client;
 use Procountor\Procountor\Interfaces\Read\Attachment as AttachmentIn;
 use Procountor\Procountor\Response\Attachment as AttachmentOut;
 

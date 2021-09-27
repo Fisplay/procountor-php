@@ -2,9 +2,9 @@
 
 namespace Procountor\Procountor\Resources;
 
-use Procountor\Procountor\Client;
 use Procountor\Procountor\Interfaces\Read\BusinessPartner as BusinessPartnerIn;
 use Procountor\Procountor\Response\BusinessPartner as BusinessPartnerOut;
+
 
 class BusinessPartners extends AbstractResourceRequest
 {

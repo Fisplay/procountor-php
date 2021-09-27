@@ -2,9 +2,9 @@
 
 namespace Procountor\Procountor\Resources;
 
-use Procountor\Procountor\Client;
 use Procountor\Procountor\Interfaces\DimensionInterface;
 use Procountor\Procountor\Response\Dimension as DimensionOut;
+
 
 class Dimensions extends AbstractResourceRequest
 {
