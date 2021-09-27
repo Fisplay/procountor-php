@@ -5,13 +5,14 @@ namespace Procountor\Procountor;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
-class Environment
+final class Environment
 {
 
     private string $clientId;
     private string $clientSecret;
     private ?string $apiKey = null;
     private string $apiVersion;
+    private bool $debug;
     private UriInterface $baseUri;
     private UriInterface $redirectUri;
 
@@ -22,7 +23,8 @@ class Environment
         string $baseUri,
         string $redirectUri,
         UriFactoryInterface $uriFactory,
-        string $apiVersion = 'latest'
+        string $apiVersion = 'latest',
+        bool $debug = false
     ) {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -30,6 +32,7 @@ class Environment
         $this->baseUri = $uriFactory->createUri($baseUri);
         $this->redirectUri = $uriFactory->createUri($redirectUri);
         $this->apiVersion = $apiVersion;
+        $this->debug = $debug;
     }
 
     public function accessTokenUri(): UriInterface
@@ -70,5 +73,10 @@ class Environment
     public function getRedirectUri(): UriInterface
     {
         return $this->redirectUri;
+    }
+
+    public function debug(): bool
+    {
+        return $this->debug;
     }
 }
