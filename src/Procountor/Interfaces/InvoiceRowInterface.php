@@ -5,30 +5,74 @@ namespace Procountor\Procountor\Interfaces;
 interface InvoiceRowInterface extends AbstractResourceInterface
 {
 
-    //Unique identifier for a product. Links the invoice row to a product in the product register. Note that all other fields (name, price, ...) of an invoice row can be modified independently of the information in the product register. ,
+    /**
+     * Unique identifier for a product.
+     * Links the invoice row to a product in the product register.
+     * Note that all other fields (name, price, ...) of an invoice row can be
+     * modified independently of the information in the product register.
+     * @return null|int
+     */
     public function getProductId(): ?int;
 
-    //Product Name
+
+    /**
+     * Product name
+     *
+     * @return string
+     */
     public function getProduct(): string;
 
-    //Product code
+    /**
+     * Product code
+     *
+     * @return string
+     */
     public function getProductCode(): string;
 
-    //Product quantity
+    /**
+     * Product quantity
+     *
+     * @return float
+     */
     public function getQuantity(): float;
 
-    //Product unit. = ['CM', 'LOT', 'GRAM', 'HOUR', 'PERSON', 'LINEAR_METER', 'KILOGRAM', 'MONTH', 'KILOMETER', 'PIECE', 'KILOWATT_HOUR', 'LITER', 'BOX', 'METER', 'SQUARE_METER', 'CUBIC_METER', 'SALE_UNIT', 'MINUTE', 'MILLIMETER', 'PARCEL', 'BOTTLE', 'CAN', 'BAG', 'DAY', 'ROLL', 'PAGE', 'SACK', 'SERIES', 'TUBE', 'TON', 'YEAR', 'WEEK', 'FULL_DAY', 'NO_UNIT'],
+    /**
+     * Product unit
+     * Check enum values from InvoiceRow.unit
+     *
+     * @see https://dev.procountor.com/api-reference/#model-InvoiceRow
+     *
+     * @return string
+     */
     public function getUnit(): string;
 
-    //Product unit price. This value is affected by the "unit prices include VAT" setting on the invoice. ,
+    /**
+     * Product unit price. This value is affected by the "unit prices include VAT" setting on the invoice.
+     *
+     * @see Procountor\Procountor\Interfaces\ExtraInfoInterface
+     *
+     * @return float
+     */
     public function getUnitPrice(): float;
 
-    //Product discount percentage
+    /**
+     * Product discount percentage
+     *
+     * @return float
+     */
     public function getDiscountPercent(): float;
 
-    //Product VAT percentage. Must be a percentage currently in use for the company. ,
+    /**
+     * Product VAT percentage. Must be a percentage currently in use for the company.
+     *
+     * @return int
+     */
     public function getVatPercent(): int;
 
-    //Invoice row comment. Visible on the invoice. Use \ as line break. Max length 25
+    /**
+     * Invoice row comment. Visible on the invoice. Use \ as line break. Max length 25
+     *
+     * @return null|string
+     */
     public function getComment(): ?string;
 }

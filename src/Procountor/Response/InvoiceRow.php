@@ -3,7 +3,6 @@
 namespace Procountor\Procountor\Response;
 
 use Procountor\Procountor\Interfaces\InvoiceRowInterface;
-use stdClass;
 
 class InvoiceRow extends AbstractResponse implements InvoiceRowInterface
 {

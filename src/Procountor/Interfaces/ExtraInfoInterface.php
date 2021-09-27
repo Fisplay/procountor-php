@@ -6,7 +6,6 @@ namespace Procountor\Procountor\Interfaces;
 /**
  * interface ExtraInfoInterface
  *
- * @see Procountor\Procountor\Interfaces\ExtraInfoInterface
  * @see https://dev.procountor.com/api-reference/#model-ExtraInfo
  * @package Procountor\Procountor\Interfaces
  */
