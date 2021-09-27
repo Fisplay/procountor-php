@@ -5,6 +5,16 @@ namespace Procountor\Procountor\Interfaces\Read;
 use Procountor\Procountor\Interfaces\InvoiceCommon;
 use Procountor\Procountor\Collection\AttachmentCollection;
 
+
+/**
+ * interface Invoice
+ *
+ * Read-spesific interface for invoices.
+ *
+ * @see Procountor\Procountor\Interfaces\InvoiceCommon;
+ *
+ * @package Procountor\Procountor\Interfaces\Read
+ */
 interface Invoice extends InvoiceCommon
 {
 

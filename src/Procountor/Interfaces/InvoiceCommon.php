@@ -6,6 +6,19 @@ use Procountor\Procountor\Collection\InvoiceRowCollection;
 use Procountor\Procountor\Collection\TravelInformationItemsCollection;
 use DateTime;
 
+
+/**
+ * interface InvoiceCommon
+ *
+ * Holds common fields for write/read invoices.
+ * Also defines constants for enum states.
+ *
+ * @see https://dev.procountor.com/api-reference/#model-Invoice
+ * @see Procountor\Procountor\Interfaces\Read\Invoice
+ * @see Procountor\Procountor\Interfaces\Write\Invoice
+ *
+ * @package Procountor\Procountor\Interfaces
+ */
 interface InvoiceCommon extends AbstractResourceInterface
 {
 
