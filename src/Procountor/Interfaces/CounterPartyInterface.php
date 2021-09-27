@@ -12,7 +12,7 @@ interface CounterPartyInterface extends AbstractResourceInterface
     public function getContactPersonName(): ?string;
 
     /**
-     * **SALES_INVOICE only**
+     * **SALES_INVOICE, SALES_ORDER, PURCHASE_INVOICE and PURCHASE_ORDER only**
      *
      * Business ID or national identification number.
      *
@@ -21,7 +21,7 @@ interface CounterPartyInterface extends AbstractResourceInterface
     public function getIdentifier(): ?string;
 
     /**
-     * **SALES_INVOICE only**
+     * **SALES_INVOICE and SALES_ORDER, PURCHASE_INVOICE and PURCHASE_ORDER only**
      *
      * Tax code of the customer.
      *
@@ -30,7 +30,7 @@ interface CounterPartyInterface extends AbstractResourceInterface
     public function getTaxCode(): ?string;
 
     /**
-     * **SALES_INVOICE only**
+     * **SALES_INVOICE, SALES_ORDER, PURCHASE_INVOICE and PURCHASE_ORDER only only**
      *
      * Customer number.
      *
@@ -39,7 +39,7 @@ interface CounterPartyInterface extends AbstractResourceInterface
     public function getCustomerNumber(): ?string;
 
     /**
-     * **SALES_INVOICE only**
+     * **SALES_INVOICE and SALES_ORDER only**
      *
      * Email address of the buyer.
      * Required if invoicing channel is EMAIL, otherwise not visible on the UI.
