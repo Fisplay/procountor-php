@@ -23,7 +23,9 @@ interface InvoiceCommon extends AbstractResourceInterface
 {
 
     public const INVOICE_TPYE_SALES_INVOICE = 'SALES_INVOICE';
+    public const INVOICE_TYPE_SALES_ORDER = 'SALES_ORDER';
     public const INVOICE_TPYE_PURCHASE_INVOICE = 'PURCHASE_INVOICE';
+    public const INVOICE_TYPE_PURCHASE_ORDER = 'PURCHASE_ORDER';
     public const INVOICE_TPYE_TRAVEL_INVOICE = 'TRAVEL_INVOICE';
     public const INVOICE_TPYE_BILL_OF_CHARGES = 'BILL_OF_CHARGES';
     public const INVOICE_TPYE_PERIODIC_TAX_RETURN = 'PERIODIC_TAX_RETURN';
@@ -85,7 +87,9 @@ interface InvoiceCommon extends AbstractResourceInterface
      * Invoice type. Note that this affects validation requirements.
      * One of:
      * - SALES_INVOICE
+     * - SALES_ORDER
      * - PURCHASE_INVOICE
+     * - PURCHASE_ORDER
      * - TRAVEL_INVOICE
      * - BILL_OF_CHARGES
      * - PERIODIC_TAX_RETURN
