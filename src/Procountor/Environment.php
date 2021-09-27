@@ -34,7 +34,7 @@ class Environment
 
     public function accessTokenUri(): UriInterface
     {
-        return $this->baseUri->withPath('/oauth/token');
+        return $this->baseUri->withPath('/api/oauth/token');
     }
 
     public function getClientId(): string
