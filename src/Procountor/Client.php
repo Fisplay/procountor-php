@@ -78,8 +78,8 @@ class Client
             'status'  => $response->getStatusCode(),
         ]);
         if (
-            $response->getHeader('Content-Type') === 'application/json'
-            || $request->getHeader('Accept') === 'application/json'
+            substr($response->getHeader('Content-Type')[0] ?? '', 0, 16)  === 'application/json'
+            || substr($request->getHeader('Accept')[0] ?? '', 0, 16) === 'application/json'
         ) {
             return json_decode($result);
         }
