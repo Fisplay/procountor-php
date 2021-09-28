@@ -49,6 +49,8 @@ interface InvoiceRowInterface extends AbstractResourceInterface
     /**
      * Product unit price. This value is affected by the "unit prices include VAT" setting on the invoice.
      *
+     * **IMPORTANT!** Prices are formatted as floats, ie. 5 euros 20 cents = 5.20
+     *
      * @see Procountor\Procountor\Interfaces\ExtraInfoInterface
      *
      * @return float
