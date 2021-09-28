@@ -3,11 +3,12 @@
 namespace Procountor\Laravel;
 
 use Illuminate\Support\Facades\Facade;
+use Procountor\Procountor\Resources\Invoices;
 
 /**
  * @see \Procountor\Procountor\Client
  */
-class ProcountorFacade extends Facade
+class ProcountorInvoicesFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +17,6 @@ class ProcountorFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'procountor';
+        return Invoices::class;
     }
 }
