@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Procountor\Laravel\Commands\Authorize as CommandsAuthorize;
 use Procountor\Procountor\Client;
 use Procountor\Procountor\Environment;
+use Procountor\Procountor\Resources\Invoices;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -56,5 +57,6 @@ class ProcountorServiceProvider extends ServiceProvider implements DeferrablePro
             $app->make(Environment::class),
             $app->make(CacheItemPoolInterface::class)
         ));
+        $this->app->bind(Invoices::class, fn ($app) => new Invoices($app->make(Client::class)));
     }
 }
