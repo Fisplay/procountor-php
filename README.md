@@ -10,19 +10,45 @@
 
 This README is not up to date. This repository is a fork of https://github.com/Fisplay/procountor-php and not compatible with the original one.
 
-My goals;
-- remove hard dependecies (Guzzle etc, use DI instead)
-- PSR compatible;
-    - PSR-3 logger
-    - PSR-6 cache interfaces
-    - PSR-7 HTTP Message interfaces
-    - PSR-17 HTTP Factories
-    - PSR-18 HTTP Clients
-- Laravel compatible (can be installed as a Laravel package)
+## My goals;
+- [ ] remove hard dependecies (Guzzle etc, use DI instead)
+- [x] PSR compatible;
+    - [x] PSR-3 logger
+    - [x] PSR-6 cache interfaces
+    - [x] PSR-7 HTTP Message interfaces
+    - [x] PSR-17 HTTP Factories
+    - [x] PSR-18 HTTP Clients
+- [ ] Laravel compatible (can be installed as a Laravel package)
+    - [x] ServiceProvider to register client
+    - [ ] ServiceProvider to register resources (parital)
+    - [x] Config
+    - [ ] Facades for resources (partial)
+    - [ ] Helper for authorization flow (partial)
+- [ ] Modernize test suite (use [Pest](https://pestphp.com/))
+- [ ] PHP8 compatibility
+- [ ] Document properly using phpdoc (partial)
+
+## Tested working API's
+- Invoices
+    - Create invoice
+    - List invoices
+
+## TODO
+- Fix tests
+- Write quickstart
+- Compare properties for the latest version of the Procountor API
+- Export documentation to static site
+- Write facades
+- Finalize authorization flow (view?)
 
 
 ---
-
+## ORIGINAL ⬇
+---
+## DOCS ⬇
+---
+## BELOW ⬇
+---
 
 - [Introduction](#introduction)
 - [Start](#start)
