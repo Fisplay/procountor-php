@@ -29,11 +29,14 @@ class PaymentInfo extends AbstractResponse implements PaymentInfoInterface
 
     public function getBankReferenceCode(): ?string
     {
-        return $this->data->bankReferenceCode;
+        return $this->data->bankReferenceCode ?? null;
     }
 
     public function getBankAccount(): ?BankAccountInterface
     {
+        if (!isset($this->data->bankAccount)) {
+            return null;
+        }
         return new BankAccount($this->data->bankAccount);
     }
 
