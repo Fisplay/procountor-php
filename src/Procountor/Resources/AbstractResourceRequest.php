@@ -2,6 +2,7 @@
 
 namespace Procountor\Procountor\Resources;
 
+use LogicException;
 use Procountor\Procountor\Client;
 use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Procountor\Response\AbstractResponse;
@@ -38,7 +39,7 @@ class AbstractResourceRequest
         if ($id) {
             $path .= '/' . $id;
         }
-        $response = $this->client->get($path, $id);
+        $response = $this->client->get($path);
 
 
         return $this->createResponse($response);
@@ -56,6 +57,7 @@ class AbstractResourceRequest
 
     public function delete()
     {
+        throw new LogicException('Method DELETE not implemented yet.');
     }
 
     protected function createResponse($response)
@@ -64,17 +66,13 @@ class AbstractResourceRequest
         switch (gettype($response)) {
             case 'object':
                 return new $clsOut($response);
-            break;
             case 'array':
                 $clsOut .= 'List';
                 //abstract response needs stdclass in
                 $response = (object)['items' => $response];
                 return new $clsOut($response);
-
-            break;
             default:
                 throw new ClientException('Invalid response or server error!');
-            break;
         }
     }
 }
