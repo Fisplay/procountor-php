@@ -133,7 +133,7 @@ class Client
 
     protected function getAccessToken(): string
     {
-        $accessKeyItem = $this->pool->getItem('procountor_access_token');
+        $accessKeyItem = $this->pool->getItem($this->environment->getCacheKey());
         if ($accessKeyItem->isHit()) {
             $accessKey = $accessKeyItem->get();
         } else {

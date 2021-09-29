@@ -4,6 +4,7 @@ namespace Procountor\Procountor;
 
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 
 final class Environment
 {
@@ -78,5 +79,14 @@ final class Environment
     public function debug(): bool
     {
         return $this->debug;
+    }
+
+    public function getCacheKey(): string
+    {
+        if (is_null($this->apiKey)) {
+            throw new RuntimeException('Generate API key first');
+        }
+        $hash = crc32($this->apiKey);
+        return "procountor_access_token_$hash";
     }
 }
