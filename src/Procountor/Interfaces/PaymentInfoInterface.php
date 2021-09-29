@@ -29,6 +29,10 @@ interface PaymentInfoInterface extends AbstractResourceInterface
     public const PAYMENT_METHOD_DKLMPKRE = 'DKLMPKRE';
     public const PAYMENT_METHOD_NETS = 'NETS';
 
+    // Just empty string might be confusing ¯\_(ツ)_/¯
+    public const PAYMENT_REFERENCE_CODE_GENERATE_AUTOMATICALLY = '';
+
+
     /**
      * Payment method. One of:
      * - BANK_TRANSFER
