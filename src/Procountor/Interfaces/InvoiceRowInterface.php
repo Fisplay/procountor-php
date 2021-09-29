@@ -27,7 +27,7 @@ interface InvoiceRowInterface extends AbstractResourceInterface
      *
      * @return string
      */
-    public function getProductCode(): string;
+    public function getProductCode(): ?string;
 
     /**
      * Product quantity
