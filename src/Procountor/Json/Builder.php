@@ -31,32 +31,29 @@ class Builder
                 continue;
             }
 
-            $methodname = $method->name;
-            $methodreturn = $this->resource->$methodname();
+            $methodReturn = $method->invoke($this->resource);
 
-            //We dont want nulls to json
-            if ($methodreturn === null) {
+            // We dont want nulls to json
+            if ($methodReturn === null) {
                 continue;
             }
 
-            $methodReturnObj = (object)$methodreturn;
-
             switch (true) {
-                case $methodReturnObj instanceof DateTime:
-                    $value = $this->handleDateTime($methodreturn);
+                case $methodReturn instanceof DateTime:
+                    $value = $this->handleDateTime($methodReturn);
                     break;
-                case $methodReturnObj instanceof AbstractResourceInterface:
-                    $value = $this->handleResource($methodreturn);
+                case $methodReturn instanceof AbstractResourceInterface:
+                    $value = $this->handleResource($methodReturn);
                     break;
-                case $methodReturnObj instanceof AbstractCollection:
-                    $value = $this->handleCollection($methodreturn);
+                case $methodReturn instanceof AbstractCollection:
+                    $value = $this->handleCollection($methodReturn);
                     break;
                 default:
-                    $value = $methodreturn;
+                    $value = $methodReturn;
                     break;
             }
 
-            $jsonArray[$this->methodToField($methodname)] = $value;
+            $jsonArray[$this->methodToField($method->name)] = $value;
         }
 
         return $jsonArray;
