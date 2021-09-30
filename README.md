@@ -24,6 +24,7 @@ This README is not up to date. This repository is a fork of https://github.com/F
     - [x] Config
     - [ ] Facades for resources (partial)
     - [ ] Helper for authorization flow (partial)
+    - [ ] Jobs for create -operations
 - [ ] Modernize test suite (use [Pest](https://pestphp.com/))
 - [ ] PHP8 compatibility
 - [ ] Document properly using phpdoc (partial)

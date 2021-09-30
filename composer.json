@@ -39,7 +39,7 @@
         "Procountor\\Laravel\\ProcountorServiceProvider"
       ],
       "aliases": {
-        "Invoices": "Procountor\\Laravel\\ProcountorInvoicesFacade"
+        "Invoices": "Procountor\\Laravel\\Facades\\Invoices"
       }
     }
   },

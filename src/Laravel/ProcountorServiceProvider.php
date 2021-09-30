@@ -12,7 +12,6 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\UriFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 class ProcountorServiceProvider extends ServiceProvider implements DeferrableProvider
