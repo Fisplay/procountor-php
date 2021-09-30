@@ -39,7 +39,8 @@
         "Procountor\\Laravel\\ProcountorServiceProvider"
       ],
       "aliases": {
-        "Invoices": "Procountor\\Laravel\\Facades\\Invoices"
+        "Invoices": "Procountor\\Laravel\\Facades\\Invoices",
+        "CountryHelper": "Procountor\\Laravel\\Facades\\CountryHelper"
       }
     }
   },
