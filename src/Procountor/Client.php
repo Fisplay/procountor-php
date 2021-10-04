@@ -79,21 +79,25 @@ class Client
      */
     public function request(RequestInterface $request)
     {
-        $response = $this->httpClient->sendRequest($request);
-        switch ($response->getStatusCode()) {
-            case Http::BAD_REQUEST:
-                throw new ValidationException($response);
-            default:
-                $result = $response->getBody()->getContents();
-                $this->logger->logRequest('Procountor request', $request, $response);
-                if (
-                    Http::isJson($response->getHeader('Content-Type')[0] ?? null)
-                    || Http::isJson($request->getHeader('Accept')[0] ?? null)
-                ) {
-                    return json_decode($result);
-                }
-                return $result;
+        try {
+            $response = $this->httpClient->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
+            switch ($response->getStatusCode()) {
+                case Http::BAD_REQUEST:
+                    throw new ValidationException($response);
+                default:
+                    throw $e;
+            }
         }
+        $result = $response->getBody()->getContents();
+        $this->logger->logRequest('Procountor request', $request, $response);
+        if (
+            Http::isJson($response->getHeader('Content-Type')[0] ?? null)
+            || Http::isJson($request->getHeader('Accept')[0] ?? null)
+        ) {
+            return json_decode($result);
+        }
+        return $result;
     }
 
     public function createRequest(string $method, string $resourceName, ?AbstractResourceInterface $resource = null): RequestInterface
