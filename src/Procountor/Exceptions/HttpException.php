@@ -19,13 +19,13 @@ use Throwable;
 abstract class HttpException extends RuntimeException
 {
 
-    protected string $message = 'Request failed.';
+    protected const MESSAGE = 'Request failed.';
 
 
     public function __construct(ResponseInterface $response, Throwable $previous = null)
     {
         $this->respone = $response;
-        parent::__construct($this->message, $response->getStatusCode(), $previous);
+        parent::__construct(static::MESSAGE, $response->getStatusCode(), $previous);
     }
 
     /**

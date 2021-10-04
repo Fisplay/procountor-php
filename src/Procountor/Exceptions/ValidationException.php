@@ -19,7 +19,8 @@ use Throwable;
 class ValidationException extends HttpException
 {
 
-    protected string $message = 'Request validation failed.';
+    protected const MESSAGE = 'Request validation failed.';
+
     protected array $errors;
 
 
