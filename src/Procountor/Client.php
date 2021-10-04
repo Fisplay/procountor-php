@@ -10,7 +10,6 @@ use Procountor\Procountor\Json\Builder;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -73,33 +72,29 @@ class Client
      * body.
      *
      * @param RequestInterface $request
-     * @return mixed
-     * @throws ValidationException
-     * @throws RequestExceptionInterface
+     * @return string|array|object
      * @throws ClientExceptionInterface
+     * @throws ValidationException
      * @throws RuntimeException
      */
     public function request(RequestInterface $request)
     {
-        try {
-            $response = $this->httpClient->sendRequest($request);
-        } catch (RequestExceptionInterface $e) {
-            switch ($e->getCode()) {
-                case Http::BAD_REQUEST:
-                    throw new ValidationException($e->response);
-                default:
-                    throw $e;
-            }
+        $response = $this->httpClient->sendRequest($request);
+
+        switch ($response->getStatusCode()) {
+            case Http::BAD_REQUEST:
+                throw new ValidationException($response);
+            default:
+                $result = $response->getBody()->getContents();
+                $this->logger->logRequest('Procountor request', $request, $response);
+                if (
+                    Http::isJson($response->getHeader('Content-Type')[0] ?? null)
+                    || Http::isJson($request->getHeader('Accept')[0] ?? null)
+                ) {
+                    return json_decode($result);
+                }
+                return $result;
         }
-        $result = $response->getBody()->getContents();
-        $this->logger->logRequest('Procountor request', $request, $response);
-        if (
-            Http::isJson($response->getHeader('Content-Type')[0] ?? null)
-            || Http::isJson($request->getHeader('Accept')[0] ?? null)
-        ) {
-            return json_decode($result);
-        }
-        return $result;
     }
 
     public function createRequest(string $method, string $resourceName, ?AbstractResourceInterface $resource = null): RequestInterface
