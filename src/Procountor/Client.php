@@ -85,15 +85,8 @@ class Client
             case Http::BAD_REQUEST:
                 throw new ValidationException($response);
             default:
-                $result = $response->getBody()->getContents();
                 $this->logger->logRequest('Procountor request', $request, $response);
-                if (
-                    Http::isJson($response->getHeader('Content-Type')[0] ?? null)
-                    || Http::isJson($request->getHeader('Accept')[0] ?? null)
-                ) {
-                    return json_decode($result);
-                }
-                return $result;
+                return Http::responseBody($response);
         }
     }
 

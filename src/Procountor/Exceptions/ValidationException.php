@@ -2,6 +2,7 @@
 
 namespace Procountor\Procountor\Exceptions;
 
+use Procountor\Helpers\Http;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 use Throwable;
@@ -27,7 +28,7 @@ class ValidationException extends HttpException
     public function __construct(ResponseInterface $response, Throwable $previous = null)
     {
         parent::__construct($response, $previous);
-        $responseBody = $this->responseBody();
+        $responseBody = Http::responseBody($response);
         switch (gettype($responseBody)) {
             case 'object':
                 $this->errors = $responseBody->errors ?? [];
