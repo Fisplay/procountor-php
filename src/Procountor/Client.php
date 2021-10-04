@@ -10,6 +10,7 @@ use Procountor\Procountor\Json\Builder;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -72,16 +73,17 @@ class Client
      * body.
      *
      * @param RequestInterface $request
-     * @return string|object
-     * @throws ClientExceptionInterface
+     * @return mixed
      * @throws ValidationException
+     * @throws RequestExceptionInterface
+     * @throws ClientExceptionInterface
      * @throws RuntimeException
      */
     public function request(RequestInterface $request)
     {
         try {
             $response = $this->httpClient->sendRequest($request);
-        } catch (ClientExceptionInterface $e) {
+        } catch (RequestExceptionInterface $e) {
             switch ($response->getStatusCode()) {
                 case Http::BAD_REQUEST:
                     throw new ValidationException($response);
