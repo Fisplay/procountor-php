@@ -1,6 +1,6 @@
 <?php
 
-namespace Procountor\Procountor;
+namespace Procountor\Procountor\Exceptions;
 
 use Exception;
 
