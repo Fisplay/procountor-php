@@ -2,12 +2,11 @@
 
 namespace Procountor\Procountor\Resources;
 
-use LogicException;
 use Procountor\Procountor\Client;
 use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Procountor\Response\AbstractResponse;
-use Procountor\Procountor\ClientException;
-use stdClass;
+use Procountor\Procountor\Exceptions\ClientException;
+use Procountor\Procountor\Exceptions\NotImplementedException;
 
 class AbstractResourceRequest
 {
@@ -57,7 +56,7 @@ class AbstractResourceRequest
 
     public function delete()
     {
-        throw new LogicException('Method DELETE not implemented yet.');
+        throw new NotImplementedException('Method DELETE not implemented yet.');
     }
 
     protected function createResponse($response)

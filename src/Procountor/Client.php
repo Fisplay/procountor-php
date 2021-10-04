@@ -2,22 +2,22 @@
 
 namespace Procountor\Procountor;
 
+use Procountor\Helpers\Http;
+use Procountor\Helpers\LoggerDecorator;
+use Procountor\Procountor\Exceptions\ValidationException;
 use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Procountor\Json\Builder;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class Client
 {
-
-    public const HTTP_GET = 'GET';
-    public const HTTP_POST = 'POST';
-    public const HTTP_PUT = 'PUT';
-    public const HTTP_DELETE = 'DELETE';
     public const RESOURCE_ATTACHMENT = 'attachments';
     public const RESOURCE_BUSINESS_PARTNER = 'businesspartners';
     public const RESOURCE_DIMENSION = 'dimensions';
@@ -27,7 +27,7 @@ class Client
     protected ClientInterface $httpClient;
     protected RequestFactoryInterface $requestFactory;
     protected StreamFactoryInterface $streamFactory;
-    protected LoggerInterface $logger;
+    protected LoggerDecorator $logger;
     protected Environment $environment;
     protected CacheItemPoolInterface $pool;
 
@@ -43,47 +43,57 @@ class Client
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
-        $this->logger = $logger;
+        $this->logger = new LoggerDecorator($logger);
         $this->environment = $environment;
         $this->pool = $pool;
     }
 
     public function post(string $resourceName, AbstractResourceInterface $resource)
     {
-        $request = $this->createRequest(self::HTTP_POST, $resourceName, $resource);
+        $request = $this->createRequest(Http::POST, $resourceName, $resource);
         return $this->request($request);
     }
 
     public function put(string $resourceName, AbstractResourceInterface $resource)
     {
-        $request = $this->createRequest(self::HTTP_PUT, $resourceName, $resource);
+        $request = $this->createRequest(Http::PUT, $resourceName, $resource);
         return $this->request($request);
     }
 
     public function get(string $resourceName)
     {
-        $request = $this->createRequest(self::HTTP_GET, $resourceName);
+        $request = $this->createRequest(Http::GET, $resourceName);
         return $this->request($request);
     }
 
+    /**
+     * Execute the request. If either request's Accept or responses Content-Type is set
+     * to JSON, returns decoded JSON body as objec. Otherwise returns request's string
+     * body.
+     *
+     * @param RequestInterface $request
+     * @return string|object
+     * @throws ClientExceptionInterface
+     * @throws ValidationException
+     * @throws RuntimeException
+     */
     public function request(RequestInterface $request)
     {
         $response = $this->httpClient->sendRequest($request);
-        $result = $response->getBody()->getContents();
-        $this->logger->info('Procountor request', [
-            'url'     => $request->getUri(),
-            'method'  => $request->getMethod(),
-            'headers' => json_encode($request->getHeaders()),
-            'body'    => $request->getBody()->getContents(),
-            'status'  => $response->getStatusCode(),
-        ]);
-        if (
-            substr($response->getHeader('Content-Type')[0] ?? '', 0, 16)  === 'application/json'
-            || substr($request->getHeader('Accept')[0] ?? '', 0, 16) === 'application/json'
-        ) {
-            return json_decode($result);
+        switch ($response->getStatusCode()) {
+            case Http::BAD_REQUEST:
+                throw new ValidationException($response);
+            default:
+                $result = $response->getBody()->getContents();
+                $this->logger->logRequest('Procountor request', $request, $response);
+                if (
+                    Http::isJson($response->getHeader('Content-Type')[0] ?? null)
+                    || Http::isJson($request->getHeader('Accept')[0] ?? null)
+                ) {
+                    return json_decode($result);
+                }
+                return $result;
         }
-        return $result;
     }
 
     public function createRequest(string $method, string $resourceName, ?AbstractResourceInterface $resource = null): RequestInterface
@@ -107,7 +117,7 @@ class Client
     protected function getAccessTokenByApiKey(): array
     {
         $request = $this->requestFactory
-            ->createRequest(self::HTTP_POST, $this->environment->accessTokenUri())
+            ->createRequest(Http::POST, $this->environment->accessTokenUri())
             ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
             ->withHeader('Accept', 'application/json')
             // body must be a stream & our content type must be urlencoed
