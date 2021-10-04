@@ -43,6 +43,10 @@ This README is not up to date. This repository is a fork of https://github.com/F
 - Finalize authorization flow (view?)
 
 
+## About Guzzle HTTP client
+This library relies on PSR spec which explicitly prohibits HTTP Client library from throwing on HTTP 4XX/5XX response code ranges.
+GuzzleHttp by default throws their own BadResponseException on HTTP 4XX/5XX responses, so make sure to set http_errors config parameter to false before injection.
+
 ---
 ## ORIGINAL ⬇
 ---
