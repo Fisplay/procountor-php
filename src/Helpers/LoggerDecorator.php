@@ -18,7 +18,7 @@ class LoggerDecorator implements LoggerInterface
 
     public function logRequest(string $message, RequestInterface $request, ResponseInterface $response): void
     {
-        return $this->logger->info(
+        $this->logger->info(
             $message,
             [
                 'url'     => $request->getUri(),
@@ -32,46 +32,46 @@ class LoggerDecorator implements LoggerInterface
 
     public function emergency($message, array $context = []): void
     {
-        return $this->logger->emergency($message, $context);
+        $this->logger->emergency($message, $context);
     }
 
     public function alert($message, array $context = []): void
     {
-        return $this->logger->alert($message, $context);
+        $this->logger->alert($message, $context);
     }
 
     public function critical($message, array $context = []): void
     {
-        return $this->logger->critical($message, $context);
+        $this->logger->critical($message, $context);
     }
 
     public function error($message, array $context = []): void
     {
-        return $this->logger->error($message, $context);
+        $this->logger->error($message, $context);
     }
 
     public function warning($message, array $context = []): void
     {
-        return $this->logger->warning($message, $context);
+        $this->logger->warning($message, $context);
     }
 
     public function notice($message, array $context = []): void
     {
-        return $this->logger->notice($message, $context);
+        $this->logger->notice($message, $context);
     }
 
     public function info($message, array $context = []): void
     {
-        return $this->logger->info($message, $context);
+        $this->logger->info($message, $context);
     }
 
     public function debug($message, array $context = []): void
     {
-        return $this->logger->debug($message, $context);
+        $this->logger->debug($message, $context);
     }
 
     public function log($level, $message, array $context = []): void
     {
-        return $this->logger->log($message, $context);
+        $this->logger->log($message, $context);
     }
 }
