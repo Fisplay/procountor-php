@@ -32,10 +32,13 @@ class ValidationException extends HttpException
         switch (gettype($responseBody)) {
             case 'object':
                 $this->errors = $responseBody->errors ?? [];
+                break;
             case 'string':
                 $this->errors = ['unknown' => $responseBody];
+                break;
             default:
                 $this->errors = [];
+                break;
         }
     }
 
