@@ -3,7 +3,7 @@
 namespace Procountor\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Procountor\Laravel\Helpers\Country;
+use Procountor\Helpers\Country;
 
 /**
  * @see \Procountor\Procountor\Resources\Invoices
