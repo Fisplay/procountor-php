@@ -86,7 +86,7 @@ class Client
         } catch (RequestExceptionInterface $e) {
             switch ($e->getCode()) {
                 case Http::BAD_REQUEST:
-                    throw new ValidationException($response);
+                    throw new ValidationException($e->response);
                 default:
                     throw $e;
             }
