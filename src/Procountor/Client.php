@@ -84,7 +84,7 @@ class Client
         try {
             $response = $this->httpClient->sendRequest($request);
         } catch (RequestExceptionInterface $e) {
-            switch ($response->getStatusCode()) {
+            switch ($e->getCode()) {
                 case Http::BAD_REQUEST:
                     throw new ValidationException($response);
                 default:
