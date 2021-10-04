@@ -1,6 +1,6 @@
 <?php
 
-namespace Procountor\Laravel\Helpers;
+namespace Procountor\Helpers;
 
 use OutOfBoundsException;
 
@@ -134,7 +134,7 @@ class Country
             'KI' => 'KIRIBATI',
             'KP' => 'DEMOCRATIC_PEOPLE_S_REPUBLIC_OF_KOREA',
             'KR' => 'REPUBLIC_OF_KOREA',
-            // '' => 'KOSOVO_TEMPORARY',
+            // '' => 'KOSOVO_TEMPORARY', ??
             'KW' => 'KUWAIT',
             'KG' => 'KYRGYZSTAN',
             'LA' => 'LAO_PEOPLE_S_DEMOCRATIC_REPUBLIC',
