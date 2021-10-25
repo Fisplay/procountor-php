@@ -11,20 +11,20 @@
 This README is not up to date. This repository is a fork of https://github.com/Fisplay/procountor-php and not compatible with the original one.
 
 ## My goals;
-- [ ] remove hard dependecies (Guzzle etc, use DI instead)
-- [x] PSR compatible;
+- PSR compatible;
     - [x] PSR-3 logger
     - [x] PSR-6 cache interfaces
     - [x] PSR-7 HTTP Message interfaces
     - [x] PSR-17 HTTP Factories
     - [x] PSR-18 HTTP Clients
-- [ ] Laravel compatible (can be installed as a Laravel package)
+- Laravel compatible (can be installed as a Laravel package)
     - [x] ServiceProvider to register client
     - [ ] ServiceProvider to register resources (parital)
     - [x] Config
     - [ ] Facades for resources (partial)
     - [ ] Helper for authorization flow (partial)
     - [ ] Jobs for create -operations
+- [x] remove hard dependecies (Guzzle etc, use DI instead)
 - [ ] Unit/feature tests with [Pest](https://pestphp.com/) (partial)
 - [ ] PHP8 compatibility (partial)
 - [ ] Document properly using phpdoc (partial)
