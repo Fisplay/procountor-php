@@ -1,0 +1,43 @@
+{
+    "testDate": "2021-01-01",
+    "testAnotherResource": {
+        "testDate": "2021-02-02",
+        "testString": "This is a test 2.",
+        "testInt": 654321,
+        "testCollection": []
+    },
+    "testString": "This is a test.",
+    "testInt": 123456,
+    "testCollection": [
+        {
+            "testDate": "2021-02-02",
+            "testString": "This is a test 2.",
+            "testInt": 654321,
+            "testCollection": []
+        },
+        {
+            "testDate": "2021-02-02",
+            "testString": "This is a test 2.",
+            "testInt": 654321,
+            "testCollection": []
+        },
+        {
+            "testDate": "2021-02-02",
+            "testString": "This is a test 2.",
+            "testInt": 654321,
+            "testCollection": []
+        },
+        {
+            "testDate": "2021-02-02",
+            "testString": "This is a test 2.",
+            "testInt": 654321,
+            "testCollection": []
+        },
+        {
+            "testDate": "2021-02-02",
+            "testString": "This is a test 2.",
+            "testInt": 654321,
+            "testCollection": []
+        }
+    ]
+}

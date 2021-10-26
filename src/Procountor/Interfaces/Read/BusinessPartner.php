@@ -3,7 +3,6 @@
 namespace Procountor\Procountor\Interfaces\Read;
 
 use Procountor\Procountor\Interfaces\BusinessPartnerCommon;
-use Procountor\Procountor\Collection\AttachmentCollection;
 
 interface BusinessPartner extends BusinessPartnerCommon
 {

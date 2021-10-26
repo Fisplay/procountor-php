@@ -2,7 +2,6 @@
 
 namespace Procountor\Procountor\Interfaces;
 
-use Procountor\Procountor\Collection\AllocationCollection;
 use Procountor\Procountor\Collection\DimensionItemValueCollection;
 
 interface TransactionCommon extends AbstractResourceInterface

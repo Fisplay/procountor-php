@@ -4,35 +4,44 @@ namespace Procountor\Procountor\Response;
 
 use Procountor\Procountor\Interfaces\DimensionInterface;
 use Procountor\Procountor\Collection\DimensionItemCollection;
+use TypeError;
 
 class Dimension extends AbstractResponse implements DimensionInterface
 {
 
-    //Dimension ID. ,
+    /**
+     * Get the dimension ID
+     *
+     * @return int
+     */
     public function getId(): int
     {
         return $this->data->id;
     }
 
-    //Dimension name. ,
+    /**
+     * Get the dimension name
+     *
+     * @return string
+     */
     public function getName(): string
     {
         return $this->data->name;
     }
 
-    //Dimension items.
+    /**
+     * @return null|DimensionItemCollection<DimensionItem>
+     * @throws TypeError
+     */
     public function getItems(): ?DimensionItemCollection
     {
         if (empty($this->data->items)) {
             return null;
         }
 
-        $collection = new DimensionItemCollection();
-        foreach ($this->data->items as $item) {
-            $dimensionItem = new DimensionItem($item);
-            $collection->addItem($dimensionItem);
-        }
-
-        return $collection;
+        return new DimensionItemCollection(...array_map(
+            fn ($item) => new DimensionItem($item),
+            $this->data->items
+        ));
     }
 }

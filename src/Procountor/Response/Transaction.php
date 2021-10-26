@@ -86,12 +86,10 @@ class Transaction extends AbstractResponse implements TransactionRead
             return null;
         }
 
-        $collection = new DimensionItemValueCollection();
-        foreach ($this->data->dimensionItemValues as $dimensionItemValuedata) {
-            $dimensionItemValue = new DimensionItemValue($dimensionItemValuedata);
-            $collection->addItem($dimensionItemValue);
-        }
-        return $collection;
+        return new DimensionItemValueCollection(...array_map(
+            fn ($itemValue) => new DimensionItemValue($itemValue),
+            $this->data->dimensionItemValues
+        ));
     }
 
     //VAT deduction percentage for the transaction.

@@ -119,12 +119,10 @@ class Invoice extends AbstractResponse implements InvoiceRead
     //Invoice rows. An invoice should always have at least one row. The only exception are PERIODIC_TAX_RETURN invoices which do not have any invoice rows.
     public function getInvoiceRows(): InvoiceRowCollection
     {
-        $collection = new InvoiceRowCollection();
-        foreach ($this->data->invoiceRows as $invoicerowdata) {
-            $collection->addItem(new InvoiceRow($invoicerowdata));
-        }
-
-        return $collection;
+        return new InvoiceRowCollection(...array_map(
+            fn ($row) => new InvoiceRow($row),
+            $this->data->invoiceRows
+        ));
     }
 
     //Invoice number from the biller in an external system. Max length 40. ,
@@ -208,12 +206,10 @@ class Invoice extends AbstractResponse implements InvoiceRead
     //Travel information items. Travel invoice may have one or more travel information items containing departure date, return date, destinations and travel purpose. ,
     public function getTravelInformationItems(): ?TravelInformationItemsCollection
     {
-        $collection = new TravelInformationItemsCollection();
-        foreach ($this->data->travelInformationItems as $travelInformationItemData) {
-            $collection->addItem(new TravelInformationItem($travelInformationItemData));
-        }
-
-        return $collection;
+        return new TravelInformationItemsCollection(...array_map(
+            fn ($item) => new TravelInformationItem($item),
+            $this->data->travelInformationItems
+        ));
     }
 
     //VAT status. Use here the numeric parts of VAT status codes listed in "VAT defaults" in Procountor. For example, for VAT status code "vat_12", use value 12.

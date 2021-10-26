@@ -3,12 +3,24 @@
 namespace Procountor\Procountor\Collection;
 
 use Procountor\Procountor\Interfaces\DimensionItemValueInterface;
+use TypeError;
 
 class DimensionItemValueCollection extends AbstractCollection
 {
-    public function addItem(DimensionItemValueInterface $item): AbstractCollection
+
+    public function __construct(DimensionItemValueInterface ...$items)
     {
-        $this->addItemToCollection($item, true);
+        $this->items = $items;
+    }
+
+    public function addItem($item): AbstractCollection
+    {
+        if (!($item instanceof DimensionItemValueInterface)) {
+            throw new TypeError('DimensionItemValueCollection expects instances of DimensionItems');
+        }
+
+        $this->items[] = $item;
         return $this;
     }
+
 }

@@ -2,18 +2,25 @@
 
 namespace Procountor\Procountor\Collection;
 
-use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use Procountor\Procountor\Interfaces\InvoiceRowInterface;
 use TypeError;
 
 class InvoiceRowCollection extends AbstractCollection
 {
-    public function addItem(AbstractResourceInterface $item): AbstractCollection
+
+    public function __construct(InvoiceRowInterface ...$items)
+    {
+        $this->items = $items;
+    }
+
+    public function addItem($item): AbstractCollection
     {
         if (!($item instanceof InvoiceRowInterface)) {
-            throw new TypeError('Invalid type. InvoiceRowInterface expected.');
+            throw new TypeError('InvoiceRowCollection expects instances of InvoiceRows');
         }
-        $this->addItemToCollection($item);
+
+        $this->items[] = $item;
         return $this;
     }
+
 }

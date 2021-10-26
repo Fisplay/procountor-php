@@ -19,6 +19,6 @@ class EInvoiceAddress extends AbstractResponse implements EInvoiceAddressInterfa
 
     public function getEdiId(): ?string
     {
-        return $this->data->ediId;
+        return $this->data->ediId ?? null;
     }
 }
