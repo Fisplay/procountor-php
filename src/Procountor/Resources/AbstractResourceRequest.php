@@ -10,11 +10,11 @@ use Procountor\Procountor\Exceptions\NotImplementedException;
 
 class AbstractResourceRequest
 {
-    protected $apiPath;
-    protected $interfaceIn;
-    protected $interfaceOut;
-
-    protected $client;
+    protected string $apiPath;
+    protected string $interfaceIn;
+    protected string $interfaceOut;
+    protected string $collectionType;
+    protected Client $client;
 
 
     public function __construct(Client $client)
