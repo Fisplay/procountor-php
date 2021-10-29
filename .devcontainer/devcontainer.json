@@ -26,7 +26,9 @@
 		"mrmlnc.vscode-apache",
 		"emallin.phpunit",
 		"amiralizadeh9480.laravel-extra-intellisense",
-		"aaron-bond.better-comments"
+		"aaron-bond.better-comments",
+		"eamodio.gitlens",
+		"dbaeumer.vscode-eslint"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
