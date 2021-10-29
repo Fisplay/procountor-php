@@ -2,14 +2,25 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "phpunit.execPath": "vendor/bin/phpunit",
-  "saveAndRunExt": {
-    "commands": [
-      {
-        "match": "\\.php$",
-        "isShellCommand": false,
-        // "cmd": "phpunit.client.test.last",
-        "cmd": "yet-phpunit.run-previous",
-      },
-    ],
-  },
+  "files.associations": {},
+  "intelephense.telemetry.enabled": false,
+  "intelephense.completion.triggerParameterHints": true,
+  "intelephense.completion.insertUseDeclaration": true,
+  "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
+  "intelephense.trace.server": "messages",
+  "intelephense.format.enable": true,
+  "intelephense.files.exclude": [
+    "**/.git/**",
+    "**/.svn/**",
+    "**/.hg/**",
+    "**/CVS/**",
+    "**/.DS_Store/**",
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**/{Tests,tests,Test,test}/**/*Test.php",
+    "**/.history/**",
+    "**/vendor/**/vendor/**",
+    "_ide_helper.php",
+    "_ide_helper_models"
+  ],
 }
