@@ -1,12 +1,5 @@
 <?php
 
-test('example', function () {
+test('non succesful api calls should throw', function () {
     expect(true)->toBeTrue();
-});
-
-
-    // public function testStatuscodeOtherThan200CallsError()
-    // {
-    //     $client = $this->createClient();
-    //     $this->markTestIncomplete();
-    // }
+})->skip('Test incomplete');

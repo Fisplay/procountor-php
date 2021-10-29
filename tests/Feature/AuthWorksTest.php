@@ -2,14 +2,6 @@
 
 test('example', function () {
     expect(true)->toBeTrue();
-});
-
-
-    // /**
-    //  * Test that authentication works
-    //  */
-    // public function testAuthenticateByApiKey()
-    // {
     //     $refClass = new \ReflectionClass(Client::class);
     //     $refProp = $refClass->getProperty('accessToken');
     //     $refProp->setAccessible(true);
@@ -17,4 +9,4 @@ test('example', function () {
     //     $client = $this->createClient();
 
     //     $this->assertNotNull($refProp->getValue($client));
-    // }
+})->skip('Test incomplete');
