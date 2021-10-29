@@ -98,7 +98,8 @@ interface InvoiceCommon extends AbstractResourceInterface
     public function getType(): string;
 
     /**
-     * Invoice status. A new invoice created through the API will have its status set as UNFINISHED.
+     * Invoice status.
+     * A new invoice created through the API will have its status set as UNFINISHED.
      * One of:
      * - EMPTY
      * - UNFINISHED
@@ -199,9 +200,9 @@ interface InvoiceCommon extends AbstractResourceInterface
      * Invoice rows. An invoice should always have at least one row.
      * The only exception are PERIODIC_TAX_RETURN invoices which do not have any invoice rows.
      *
-     * @return InvoiceRowCollection
+     * @return ?InvoiceRowCollection
      */
-    public function getInvoiceRows(): InvoiceRowCollection;
+    public function getInvoiceRows(): ?InvoiceRowCollection;
 
     /**
      * Invoice number from the biller in an external system.

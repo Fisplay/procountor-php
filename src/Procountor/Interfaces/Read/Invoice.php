@@ -4,7 +4,7 @@ namespace Procountor\Procountor\Interfaces\Read;
 
 use Procountor\Procountor\Interfaces\InvoiceCommon;
 use Procountor\Procountor\Collection\AttachmentCollection;
-
+use Procountor\Procountor\Collection\TravelInformationItemsCollection;
 
 /**
  * interface Invoice
@@ -12,6 +12,7 @@ use Procountor\Procountor\Collection\AttachmentCollection;
  * Read-spesific interface for invoices.
  *
  * @see Procountor\Procountor\Interfaces\InvoiceCommon;
+ * @see https://dev.procountor.com/api-reference/#model-Invoice
  *
  * @package Procountor\Procountor\Interfaces\Read
  */
@@ -54,8 +55,20 @@ interface Invoice extends InvoiceCommon
      * Use POST and DELETE /attachments to add and delete attachments
      * @see https://dev.procountor.com/api-reference/#operations-Attachments-saveAttachment
      * @see https://dev.procountor.com/api-reference/#operations-Attachments-deleteAttachment
+     * @see Procountor\Procountor\Resources\Attachments::post()
+     * @see Procountor\Procountor\Resources\Attachments::delete()
      *
      * @return null|AttachmentCollection
      */
     public function getAttachments(): ?AttachmentCollection;
+
+    /**
+     * Travel information items.
+     * Travel invoice may have one or more travel information items containing
+     * departure date, return date, destinations and travel purpose.
+     *
+     * @return null|TravelInformationItemsCollection
+     */
+    public function getTravelInformationItems(): ?TravelInformationItemsCollection;
+
 }
