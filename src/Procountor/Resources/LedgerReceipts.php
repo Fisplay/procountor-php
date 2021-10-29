@@ -8,7 +8,7 @@ use Procountor\Procountor\Response\LedgerReceipt as LedgerReceiptOut;
 
 class LedgerReceipts extends AbstractResourceRequest
 {
-    protected $apiPath = 'ledgerreceipts';
-    protected $interfaceIn = LedgerReceiptIn::class;
-    protected $interfaceOut = LedgerReceiptOut::class;
+    protected static $apiPath = 'ledgerreceipts';
+    protected static $interfaceIn = LedgerReceiptIn::class;
+    protected static $interfaceOut = LedgerReceiptOut::class;
 }

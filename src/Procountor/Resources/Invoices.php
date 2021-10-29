@@ -10,9 +10,9 @@ use Procountor\Procountor\Response\Invoice as InvoiceOut;
 class Invoices extends AbstractResourceRequest
 {
 
-    protected string $apiPath = 'invoices';
-    protected string $interfaceIn = InvoiceIn::class;
-    protected string $interfaceOut = InvoiceOut::class;
-    protected string $collectionType = InvoiceCollection::class;
+    protected static string $apiPath = 'invoices';
+    protected static string $interfaceIn = InvoiceIn::class;
+    protected static string $interfaceOut = InvoiceOut::class;
+    protected static string $collectionType = InvoiceCollection::class;
 
 }

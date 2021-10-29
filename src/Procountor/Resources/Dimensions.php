@@ -9,8 +9,8 @@ use Procountor\Procountor\Response\Dimension as DimensionOut;
 class Dimensions extends AbstractResourceRequest
 {
 
-    protected $apiPath = 'dimensions';
-    protected $interfaceIn = DimensionInterface::class;
-    protected $interfaceOut = DimensionOut::class;
+    protected static string $apiPath = 'dimensions';
+    protected static string $interfaceIn = DimensionInterface::class;
+    protected static string $interfaceOut = DimensionOut::class;
 
 }

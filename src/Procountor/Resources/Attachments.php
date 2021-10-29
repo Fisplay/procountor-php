@@ -9,9 +9,9 @@ use Procountor\Procountor\Response\Attachment as AttachmentOut;
 class Attachments extends AbstractResourceRequest
 {
 
-    protected string $apiPath = 'attachments';
-    protected string $interfaceIn = AttachmentIn::class;
-    protected string $interfaceOut = AttachmentOut::class;
-    protected string $collectionType = AttachmentCollection::class;
+    protected static string $apiPath = 'attachments';
+    protected static string $interfaceIn = AttachmentIn::class;
+    protected static string $interfaceOut = AttachmentOut::class;
+    protected static string $collectionType = AttachmentCollection::class;
 
 }
