@@ -40,5 +40,8 @@
 	"remoteUser": "vscode",
 	"features": {
 		"git": "latest"
-	}
+	},
+	"workspaceMount": "source=procountorphp,target=/workspace/procountor-php,type=volume",
+	"workspaceFolder": "/workspace/procountor-php",
+  "postCreateCommand": "sudo chown vscode /workspace/procountor-php"
 }
