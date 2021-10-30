@@ -2,6 +2,7 @@
 
 namespace Procountor\Procountor;
 
+use InvalidArgumentException;
 use Procountor\Helpers\Http;
 use Procountor\Helpers\LoggerDecorator;
 use Procountor\Procountor\Exceptions\ValidationException;
@@ -14,8 +15,17 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 use RuntimeException;
 
+
+/**
+ * class Client
+ *
+ * Wrapper for HTTP client. Contains helper methods & handles resource serialization & deserialization.
+ *
+ * @package Procountor\Procountor
+ */
 class Client
 {
     public const RESOURCE_ATTACHMENT = 'attachments';
@@ -80,16 +90,29 @@ class Client
     public function request(RequestInterface $request)
     {
         $response = $this->httpClient->sendRequest($request);
+        $this->logger->logRequest('Procountor request', $request, $response);
 
         switch ($response->getStatusCode()) {
             case Http::BAD_REQUEST:
                 throw new ValidationException($response);
             default:
-                $this->logger->logRequest('Procountor request', $request, $response);
                 return Http::responseBody($response);
         }
     }
 
+    /**
+     * Create new request to pass onto API client.
+     *
+     * @param string $method
+     * @param string $resourceName
+     * @param null|AbstractResourceInterface $resource Required when creating new resources
+     * @return RequestInterface
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws ClientExceptionInterface
+     * @throws ValidationException
+     */
     public function createRequest(string $method, string $resourceName, ?AbstractResourceInterface $resource = null): RequestInterface
     {
         // Nuke leading slashes, otherwise UriInterface would treat it as an absolute path removing /api-version/api
