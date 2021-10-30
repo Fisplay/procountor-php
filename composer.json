@@ -31,7 +31,8 @@
     "cache/array-adapter": "^1.1",
     "pestphp/pest": "^1.19",
     "pestphp/pest-plugin-mock": "^1.0",
-    "illuminate/routing": "^8.61"
+    "illuminate/routing": "^8.61",
+    "fakerphp/faker": "^1.16"
   },
   "suggest": {
     "guzzlehttp/guzzle": "Required to use the HTTP Client, Mailgun mail driver and the ping methods on schedules (^7.0.1)."
