@@ -2,8 +2,9 @@
 
 namespace Procountor\Tests;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
 use Dotenv\Dotenv;
+use Faker\Factory as FakerFactory;
+use Faker\Generator;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use PhpExtended\HttpMessage\RequestFactory;
 use PhpExtended\HttpMessage\ResponseFactory;
@@ -12,6 +13,7 @@ use PhpExtended\HttpMessage\UriFactory;
 use PHPUnit\Framework\TestCase;
 use Procountor\Procountor\Client;
 use Procountor\Procountor\Environment;
+use Procountor\Tests\TestDoubles\NullCachePool;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -23,6 +25,7 @@ use Psr\Log\NullLogger;
 class ApiTestCase extends TestCase
 {
 
+    public Generator $faker;
     private ResponseFactory $responseFactory;
     private StreamFactory $streamFactory;
 
@@ -31,7 +34,8 @@ class ApiTestCase extends TestCase
         parent::setUp();
         $this->responseFactory = new ResponseFactory();
         $this->streamFactory = new StreamFactory();
-        $this->cachePool = new ArrayCachePool();
+        $this->cachePool = new NullCachePool();
+        $this->faker = FakerFactory::create();
     }
 
     public function createClient(
@@ -62,7 +66,7 @@ class ApiTestCase extends TestCase
             $streamFactory ?? new StreamFactory(),
             $logger ?? new NullLogger(),
             $environment,
-            $cachePool ?? new ArrayCachePool()
+            $cachePool ?? new NullCachePool()
         );
     }
 
@@ -84,4 +88,5 @@ class ApiTestCase extends TestCase
         }
         return $reponse;
     }
+
 }
