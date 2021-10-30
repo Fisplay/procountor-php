@@ -1,12 +1,12 @@
 <?php
 
-namespace Procountor\Tests;
+namespace Procountor\Tests\TestDoubles;
 
 use DateTime;
 use Procountor\Procountor\Collection\AbstractCollection;
 use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 
-class TestResourceSecondary extends TestResourcePrimary
+class GenericResourceSecondary extends GenericResourcePrimary
 {
 
     public function getTestDate(): DateTime
@@ -31,7 +31,7 @@ class TestResourceSecondary extends TestResourcePrimary
 
     public function getTestCollection(): AbstractCollection
     {
-        return new TestCollection();
+        return new Collection();
     }
 
 }

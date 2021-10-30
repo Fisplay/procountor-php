@@ -1,12 +1,13 @@
 <?php
 
-namespace Procountor\Tests;
+namespace Procountor\Tests\TestDoubles;
 
 use Procountor\Procountor\Collection\AbstractCollection;
 use Procountor\Procountor\Interfaces\AbstractResourceInterface;
 use TypeError;
 
-class TestCollection extends AbstractCollection
+
+class Collection extends AbstractCollection
 {
 
     public function __construct(AbstractResourceInterface ...$items )
@@ -14,10 +15,10 @@ class TestCollection extends AbstractCollection
         $this->items = $items;
     }
 
-    public function addItem($item): TestCollection
+    public function addItem($item): Collection
     {
         if (!($item instanceof AbstractResourceInterface)) {
-            throw new TypeError('TestCollection accepts any AbstractResourceInterface');
+            throw new TypeError('Collection accepts any AbstractResourceInterface');
         }
         array_push($this->items, $item);
         return $this;
