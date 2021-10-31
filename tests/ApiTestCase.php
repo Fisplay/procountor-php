@@ -60,7 +60,7 @@ class ApiTestCase extends TestCase
         ?CacheItemPoolInterface $cachePool = null
     ) {
         return new Client(
-            $httpClient ?? new GuzzleHttpClient(),
+            $httpClient ?? new GuzzleHttpClient(['verify' => $_ENV['HTTPS_PROXY_CA_CERT'] ?? true]),
             $requestFactory ?? new RequestFactory(),
             $streamFactory ?? new StreamFactory(),
             $logger ?? new NullLogger(),
