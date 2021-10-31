@@ -70,9 +70,13 @@ class Client
         return $this->request($request);
     }
 
-    public function get(string $resourceName)
+    public function get(string $resourceName, ?array $searchParams = null)
     {
         $request = $this->createRequest(Http::GET, $resourceName);
+        if (!empty($searchParams)) {
+            $newUrl = $request->getUri()->withQuery(http_build_query($searchParams));
+            $request = $request->withUri($newUrl);
+        }
         return $this->request($request);
     }
 

@@ -12,10 +12,12 @@ use ReflectionException;
 use RuntimeException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Procountor\Procountor\Exceptions\ValidationException;
-use stdClass;
+use Procountor\Procountor\Interfaces\ListResult;
+use TypeError;
 
 class AbstractResourceRequest
 {
+
     protected static string $apiPath;
     protected static string $interfaceIn;
     protected static string $interfaceOut;
@@ -51,10 +53,30 @@ class AbstractResourceRequest
     }
 
     /**
+     * Search resources
+     *
+     * @param null|array $searchParams
+     * @return object|ListResult
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws ClientExceptionInterface
+     * @throws ValidationException
+     * @throws TypeError
+     */
+    public function search(?array $searchParams = null): ListResult
+    {
+        $path = static::$apiPath;
+        $response = $this->client->get($path, $searchParams);
+
+        return $this->createResponse($response);
+    }
+
+    /**
      * Retrieve resource(s)
      *
      * @param int|null $id (optional) Pass in to retreive singular resource
-     * @return AbstractResponse
+     * @return AbstractResponse|ListResult
      * @throws InvalidArgumentException
      * @throws ReflectionException
      * @throws RuntimeException
@@ -62,14 +84,13 @@ class AbstractResourceRequest
      * @throws ValidationException
      * @throws ClientException
      */
-    public function get(int $id = null): AbstractResponse
+    public function get(int $id = null)
     {
         $path = static::$apiPath;
         if ($id) {
             $path .= '/' . $id;
         }
         $response = $this->client->get($path);
-
 
         return $this->createResponse($response);
     }
@@ -107,25 +128,27 @@ class AbstractResourceRequest
         throw new NotImplementedException('Method DELETE not implemented yet.');
     }
 
+    /**
+     * Handle the response.
+     *
+     * @param mixed $response
+     * @return object|ListResult
+     * @throws TypeError
+     */
     protected function createResponse($response)
     {
-        $clsOut = static::$interfaceOut;
-        switch (gettype($response)) {
-            case 'object':
-                return new $clsOut($response);
-            case 'array':
-                if (isset(static::$collectionType)) {
-                    return new static::$collectionType(...array_map(
-                        fn (stdClass $item) => new $clsOut($item),
-                        $response
-                    ));
-                }
-                $clsOut .= 'List';
-                //abstract response needs stdclass in
-                $response = (object)['items' => $response];
-                return new $clsOut($response);
-            default:
-                throw new ClientException('Invalid response or server error!');
+        if (gettype($response) !== 'object') {
+            throw new TypeError('Resource requests should always receive an object response.');
         }
+
+        // List results
+        if (isset($response->results)) {
+            return isset(static::$collectionType)
+                ? new static::$collectionType($response)
+                : $response;
+        }
+
+        // Singular items
+        return new static::$interfaceOut($response);
     }
 }
