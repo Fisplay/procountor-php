@@ -14,7 +14,6 @@ interface InvoiceRowInterface extends AbstractResourceInterface
      */
     public function getProductId(): ?int;
 
-
     /**
      * Product name
      *

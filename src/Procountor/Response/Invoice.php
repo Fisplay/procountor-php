@@ -12,7 +12,7 @@ use Procountor\Procountor\Collection\InvoiceRowCollection;
 use Procountor\Procountor\Collection\TravelInformationItemsCollection;
 use DateTime;
 use stdClass;
-use TypeError;
+
 
 /**
  * class Invoice
