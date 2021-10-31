@@ -10,12 +10,12 @@ class BankAccount extends AbstractBase implements BankAccountInterface
 
     public function getAccountNumber(): string
     {
-        return $this->faker->iban('FI');
+        return $_ENV['PROCOUNTOR_BANK_ACCOUNT'] ?: $this->faker->iban('FI');
     }
 
     public function getBic(): ?string
     {
-        return $this->faker->swiftBicNumber();
+        return null;
     }
 
 }

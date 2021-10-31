@@ -3,6 +3,7 @@
 namespace Procountor\Tests\TestDoubles;
 
 use Procountor\Procountor\Interfaces\CounterPartyInterface;
+use Procountor\Procountor\Interfaces\EInvoiceAddressInterface;
 
 
 class CounterParty extends AbstractBase implements CounterPartyInterface
@@ -43,8 +44,8 @@ class CounterParty extends AbstractBase implements CounterPartyInterface
         return null;
     }
 
-    public function getEinvoiceAddress(): ?EInvoiceAddress
+    public function getEinvoiceAddress(): ?EInvoiceAddressInterface
     {
-        return new EInvoiceAddress();
+        return null;
     }
 }

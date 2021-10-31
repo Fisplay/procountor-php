@@ -10,7 +10,7 @@ class InvoiceRow extends AbstractBase implements InvoiceRowInterface
 
     public function getProductId(): ?int
     {
-        return $this->faker->numberBetween();
+        return null;
     }
 
     public function getProduct(): string

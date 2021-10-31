@@ -35,7 +35,23 @@ class Address extends AbstractBase implements AddressInterface
 
     public function getCountry(): ?string
     {
-        return $this->faker->country();
+        return $this->faker->randomElement([
+            'AFGHANISTAN',
+            'ALBANIA',
+            'ALGERIA',
+            'AMERICAN_SAMOA',
+            'ANDORRA',
+            'ANGOLA',
+            'ANGUILLA',
+            'ANTARCTICA',
+            'ANTIGUA_AND_BARBUDA',
+            'ARGENTINA',
+            'ARMENIA',
+            'ARUBA',
+            'AUSTRALIA',
+            'AUSTRIA',
+            'AZERBAIJAN',
+        ]);
     }
 
 }
