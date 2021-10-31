@@ -20,6 +20,7 @@ RUN echo " \
     max_nesting_level=512 \n \
     " > /usr/local/etc/php/conf.d/xdebug.ini
 
+RUN curl -o /usr/local/bin/psysh https://psysh.org/psysh && chmod +x /usr/local/bin/psysh
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
