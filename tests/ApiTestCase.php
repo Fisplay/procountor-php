@@ -26,16 +26,29 @@ class ApiTestCase extends TestCase
 {
 
     public Generator $faker;
-    private ResponseFactory $responseFactory;
-    private StreamFactory $streamFactory;
+    protected Environment $environment;
+    protected ResponseFactory $responseFactory;
+    protected StreamFactory $streamFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/..', '.env.testing');
+        $dotenv->load();
+
         $this->responseFactory = new ResponseFactory();
         $this->streamFactory = new StreamFactory();
         $this->cachePool = new NullCachePool();
         $this->faker = FakerFactory::create();
+        $this->environment = new Environment(
+            $_ENV['PROCOUNTOR_CLIENT_ID'],
+            $_ENV['PROCOUNTOR_CLIENT_SECRET'],
+            $_ENV['PROCOUNTOR_API_KEY'] ?? null,
+            $_ENV['PROCOUNTOR_BASE_URI'],
+            $_ENV['PROCOUNTOR_REDIRECT_URI'],
+            new UriFactory()
+        );
     }
 
     public function createClient(
@@ -46,26 +59,12 @@ class ApiTestCase extends TestCase
         ?Environment $environment = null,
         ?CacheItemPoolInterface $cachePool = null
     ) {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/..', '.env.testing');
-        $dotenv->load();
-
-        if (is_null($environment)) {
-            $environment = new Environment(
-                $_ENV['PROCOUNTOR_CLIENT_ID'],
-                $_ENV['PROCOUNTOR_CLIENT_SECRET'],
-                $_ENV['PROCOUNTOR_API_KEY'] ?? null,
-                $_ENV['PROCOUNTOR_BASE_URI'],
-                $_ENV['PROCOUNTOR_REDIRECT_URI'],
-                new UriFactory()
-            );
-        }
-
         return new Client(
             $httpClient ?? new GuzzleHttpClient(),
             $requestFactory ?? new RequestFactory(),
             $streamFactory ?? new StreamFactory(),
             $logger ?? new NullLogger(),
-            $environment,
+            $environment ?? $this->environment,
             $cachePool ?? new NullCachePool()
         );
     }
