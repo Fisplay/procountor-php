@@ -174,17 +174,16 @@ class Client
 
     private function getAccessTokenByApiKey(string $code): string
     {
-
         $post = [
             'api_key' => $code,
             'client_id' => $this->loginParameters['clientId'],
             'client_secret' => $this->loginParameters['clientSecret'],
             'redirect_uri' => $this->loginParameters['redirectUri'],
+            'redirect_uri' => $this->loginParameters['redirectUri'],
+            'grant_type' => 'client_credentials',
         ];
-        $url = sprintf(
-                '%s?grant_type=client_credentials&',
-                $this->getUrlAccessToken()
-        ).http_build_query($post);
+
+        $url = $this->getUrlAccessToken();
 
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -201,17 +200,15 @@ class Client
 
     private function getAccessTokenByAuthorizationCode(string $code): string
     {
-
         $post = [
             'code' => $code,
             'client_id' => $this->loginParameters['clientId'],
             'client_secret' => $this->loginParameters['clientSecret'],
             'redirect_uri' => $this->loginParameters['redirectUri'],
+            'grant_type' => 'authorization_code',
         ];
-        $url = sprintf(
-                '%s?grant_type=authorization_code&',
-                $this->getUrlAccessToken()
-        ).http_build_query($post);
+
+        $url = $this->getUrlAccessToken();
 
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
