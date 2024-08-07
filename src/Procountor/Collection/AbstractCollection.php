@@ -6,6 +6,7 @@ use Procountor\Interfaces\AbstractResourceInterface;
 use ArrayIterator;
 use IteratorAggregate;
 use Countable;
+use Traversable;
 
 abstract class AbstractCollection implements IteratorAggregate, Countable
 {
@@ -14,9 +15,9 @@ abstract class AbstractCollection implements IteratorAggregate, Countable
     //PHP 7.2 ONWARDS :)
     //abstract public function addItem(AbstractResourceInterface $item): AbstractCollection;
 
-    public function addItemToCollection($item, $skipcheck = false)
+    public function addItemToCollection($item, $skipCheck = false)
     {
-        if (!$skipcheck && !($item instanceof AbstractResourceInterface)) {
+        if (!$skipCheck && !($item instanceof AbstractResourceInterface)) {
             throw new \Exception('Invalid item');
         }
 
@@ -24,12 +25,13 @@ abstract class AbstractCollection implements IteratorAggregate, Countable
         return $this;
     }
 
-    public function getIterator() {
+    public function getIterator(): Traversable
+    {
         return new ArrayIterator($this->items);
     }
 
-    public function count() {
-        return $this->getIterator()->count();
+    public function count(): int
+    {
+        return count($this->getIterator());
     }
-
 }

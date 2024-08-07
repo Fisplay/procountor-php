@@ -1,9 +1,10 @@
 <?php
+
 namespace Procountor;
 
 use Procountor\Interfaces\LoggerInterface;
 
-class LoggerInterface implements LoggerInterface
+class Logger implements LoggerInterface
 {
 	public function log(
 		string $requestUrl,
@@ -14,6 +15,6 @@ class LoggerInterface implements LoggerInterface
 		string $responseHeaders,
 		string $responseBody)
 	{
-		
+
 	}
 }
