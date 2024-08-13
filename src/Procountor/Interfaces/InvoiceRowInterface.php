@@ -26,7 +26,7 @@ interface InvoiceRowInterface extends AbstractResourceInterface {
     public function getDiscountPercent(): float;
 
     //Product VAT percentage. Must be a percentage currently in use for the company. ,
-    public function getVatPercent(): int;
+    public function getVatPercent(): float;
 
     //Invoice row comment. Visible on the invoice. Use \ as line break. Max length 25
     public function getComment(): ?string;
