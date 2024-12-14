@@ -323,7 +323,7 @@ class Client
                 'urlAccessToken' => '/oauth/token',
             ],
             'dev' => [
-                'urlBase' => 'https://api-test.procountor.com/' . $this->apiVersion . '/api',
+                'urlBase' => 'https://pts-procountor.pubdev.azure.procountor.com/' . $this->apiVersion . '/api',
                 'urlAuthorize' => '/oauth/authz',
                 'urlAccessToken' => '/oauth/token',
             ],
